@@ -1,6 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box, TextField, Typography, Button } from "@material-ui/core";
 export default function Register() {
+  const [account, setAccount] = useState({
+    username: "",
+    password: "",
+  });
   return (
     <div>
       <Box
@@ -55,6 +59,10 @@ export default function Register() {
                   style={{ margin: 8 }}
                   placeholder="username"
                   fullWidth
+                  value={account.username}
+                  onChange={(e) =>
+                    setAccount({ ...account, username: e.target.value })
+                  }
                   margin="normal"
                   InputLabelProps={{
                     shrink: true,
@@ -66,6 +74,10 @@ export default function Register() {
                   style={{ margin: 8 }}
                   placeholder="password"
                   fullWidth
+                  value={account.password}
+                  onChange={(e) =>
+                    setAccount({ ...account, password: e.target.value })
+                  }
                   margin="normal"
                   InputLabelProps={{
                     shrink: true,
@@ -73,9 +85,10 @@ export default function Register() {
                 />
               </Box>
             </Box>
+            #spy {JSON.stringify(account)}
             <Box height="30%" alignItems="center" display="flex">
-              <Button variant="contained" color="primary">
-                Submit
+              <Button variant="contained" color="primary" onClick={() => {}}>
+                Register
               </Button>
             </Box>
           </Box>

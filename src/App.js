@@ -2,11 +2,24 @@ import React from "react";
 import "./index.css";
 import Navbar from "./components/Navbar/navbar.jsx";
 import Register from "./pages/register";
+import Login from "./pages/login.jsx";
+import Stock from "./pages/stock";
+import StockById from "./pages/stockById";
+import { BrowserRouter, Route, Redirect, Switch } from "react-router-dom";
 function App() {
   return (
     <>
       <Navbar />
-      <Register />
+      <BrowserRouter>
+        <Switch>
+          <Route exact path="/" component={() => <Redirect to="/stock" />} />
+          <Route path="/login" component={Login} />
+          <Route path="/register" component={Register} />
+          <Route exact path="/stock" component={Stock} />
+          <Route path="/stock/:id" component={StockById} />
+          <Route render={() => <Redirect to="/" />} />
+        </Switch>
+      </BrowserRouter>
     </>
   );
 }

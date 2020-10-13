@@ -1,6 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box, TextField, Typography, Button } from "@material-ui/core";
-export default function Login() {
+import * as loginActions from "../actions/login.action";
+import { useDispatch } from "react-redux";
+export default function Login(props) {
+  const dispatch = useDispatch();
+  const [account, setAccount] = useState({
+    username: "",
+    password: "",
+  });
   return (
     <div>
       <Box
@@ -36,7 +43,7 @@ export default function Login() {
               display="flex"
               alignItems="center"
             >
-              Register Form
+              LOGIN
             </Box>
             <Box
               // border="2px solid green"
@@ -55,6 +62,10 @@ export default function Login() {
                   style={{ margin: 8 }}
                   placeholder="username"
                   fullWidth
+                  value={account.username}
+                  onChange={(e) =>
+                    setAccount({ ...account, username: e.target.value })
+                  }
                   margin="normal"
                   InputLabelProps={{
                     shrink: true,
@@ -66,6 +77,10 @@ export default function Login() {
                   style={{ margin: 8 }}
                   placeholder="password"
                   fullWidth
+                  value={account.password}
+                  onChange={(e) =>
+                    setAccount({ ...account, password: e.target.value })
+                  }
                   margin="normal"
                   InputLabelProps={{
                     shrink: true,
@@ -74,7 +89,14 @@ export default function Login() {
               </Box>
             </Box>
             <Box height="30%" alignItems="center" display="flex">
-              <Button variant="contained" color="primary">
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={(e) => {
+                  e.preventDefault();
+                  dispatch(loginActions.login({ ...account, ...props }));
+                }}
+              >
                 Submit
               </Button>
             </Box>
