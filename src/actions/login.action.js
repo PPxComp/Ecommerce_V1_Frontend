@@ -26,3 +26,9 @@ export const login = ({ username, password, history }) => {
     }, 1000);
   };
 };
+
+export const hasError = (payload) => {
+  return (dispatch) => {
+    dispatch(setStateToFailed(payload));
+  };
+};

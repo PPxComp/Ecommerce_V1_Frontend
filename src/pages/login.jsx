@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Box, TextField, Typography, Button } from "@material-ui/core";
 import * as loginActions from "../actions/login.action";
 import { useDispatch } from "react-redux";
-import axios from "axios";
+// import axios from "axios";
 export default function Login(props) {
   const dispatch = useDispatch();
   const [account, setAccount] = useState({
@@ -10,29 +10,11 @@ export default function Login(props) {
     password: "",
   });
   const sendLogin = async ({ username, password }) => {
-    const data = {
-      username,
-      password,
-    };
-    axios
-      .post(
-        "http://localhost:8080/onlineshopping/login",
-        {
-          data,
-        },
-        {
-          headers: {
-            // "Content-Type": "application/x-www-form-urlencoded",
-            "Access-Control-Allow-Origin": "*"
-          },
-        }
-      )
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    // const data = {
+    //   username,
+    //   password,
+    // };
+    
   };
   return (
     <div>
