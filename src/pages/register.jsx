@@ -1,10 +1,32 @@
 import React, { useState } from "react";
+import axios from "axios";
 import { Box, TextField, Typography, Button } from "@material-ui/core";
 export default function Register() {
   const [account, setAccount] = useState({
     username: "",
     password: "",
   });
+  const handle = async ({ username, password }) => {
+    const data = {
+      username,
+      password,
+    };
+    axios
+      .post("http://localhost:9000/user", data, {
+        headers: {
+          "Content-Type": "application/json;charset=UTF-8",
+          "Access-Control-Allow-Origin": "*",
+        },
+      })
+      .then(function (response) {
+        console.log(response);
+        // history.push("/");
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
   return (
     <div>
       <Box
@@ -87,7 +109,11 @@ export default function Register() {
             </Box>
             #spy {JSON.stringify(account)}
             <Box height="30%" alignItems="center" display="flex">
-              <Button variant="contained" color="primary" onClick={() => {}}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => handle({ ...account })}
+              >
                 Register
               </Button>
             </Box>
