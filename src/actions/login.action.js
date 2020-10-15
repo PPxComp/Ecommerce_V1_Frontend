@@ -33,8 +33,11 @@ export const login = ({ username, password, history }) => {
           headers: {
             "Content-Type": "application/json;charset=UTF-8",
             "Access-Control-Allow-Origin": "*",
-            withwithCredentials: true,
+            "Access-Control-Allow-Credentials": true,
+            Accept: "application/json",
+            "X-Requested-With": "XMLHttpRequest",
           },
+          withCredentials: true,
         }
       );
       console.log(result.data);
