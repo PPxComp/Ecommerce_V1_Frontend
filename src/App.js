@@ -5,6 +5,7 @@ import Register from "./pages/register";
 import Login from "./pages/login.jsx";
 import Stock from "./pages/stock";
 import StockById from "./pages/stockById";
+import AddStock from "./pages/addStock";
 import { BrowserRouter, Route, Redirect, Switch } from "react-router-dom";
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/register" component={Register} />
           <Route exact path="/stock" component={Stock} />
           <Route path="/stock/:id" component={StockById} />
+          <Route path="/addstock" component={AddStock} />
           <Route render={() => <Redirect to="/" />} />
         </Switch>
       </BrowserRouter>
