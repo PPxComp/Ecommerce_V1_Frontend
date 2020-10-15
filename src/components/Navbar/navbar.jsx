@@ -47,16 +47,16 @@ export default function Navbar() {
             </>
           ) : (
             <>
-            <li className="item button secondary">
-              <a
-                href="/"
-                onClick={(e) => {
-                  dispatch(loginAction.logout());
-                }}
-              >
-                Logout
-              </a>
-            </li>
+              <li className="item button secondary">
+                <a
+                  href="/"
+                  onClick={(e) => {
+                    dispatch(loginAction.logout());
+                  }}
+                >
+                  Logout
+                </a>
+              </li>
             </>
           )}
           <li className="item button">

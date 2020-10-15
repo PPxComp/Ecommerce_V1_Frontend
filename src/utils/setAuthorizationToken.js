@@ -1,11 +1,8 @@
 import axios from "axios";
 export default function setAuthorizationToken(token) {
+  // axios.defaults.withCredentials = true;
   if (token) {
-    // axios.interceptors.request.use(function (config) {
-    //   config.headers.Authorization = token;
-    //   return config;
-    // });
-    axios.defaults.headers.common["Authorization"] = `30`;
+    axios.defaults.headers.common["Authorization"] = `${token}`;
     console.log("do");
   } else {
     axios.defaults.headers.common["Authorization"] = null;

@@ -33,7 +33,7 @@ export const login = ({ username, password, history }) => {
           headers: {
             "Content-Type": "application/json;charset=UTF-8",
             "Access-Control-Allow-Origin": "*",
-            withCredentials: true,
+            withwithCredentials: true,
           },
         }
       );
@@ -60,5 +60,6 @@ export const hasError = (payload) => {
 export const logout = () => {
   return (dispatch) => {
     dispatch(setStateToLogout());
+    localStorage.removeItem("accessToken");
   };
 };
