@@ -1,20 +1,31 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./navbar.css";
 import $ from "jquery";
+import { useDispatch } from "react-redux";
+import * as loginAction from "../../actions/login.action";
 import { useSelector } from "react-redux";
 
 export default function Navbar() {
+  const dispatch = useDispatch();
   const loginReducer = useSelector(({ loginReducer }) => loginReducer);
   window.$ = $;
-  $(function () {
-    $(".toggle").on("click", function () {
-      if ($(".item").hasClass("active")) {
-        $(".item").removeClass("active");
-      } else {
-        $(".item").addClass("active");
-      }
+  useEffect(() => {
+    $(function () {
+      $(".toggle").on("click", function () {
+        console.log("ASd");
+        if ($(".item").hasClass("active")) {
+          $(".item").removeClass("active");
+        } else {
+          $(".item").addClass("active");
+        }
+      });
     });
-  });
+  }, []);
+  useEffect(() => {
+    $(".item").removeClass("active");
+    console.log("do");
+  }, [loginReducer.isAuthenticated]);
+
   return (
     <div>
       <nav>
@@ -25,7 +36,7 @@ export default function Navbar() {
           <li className="item">
             <a href="/">Stock</a>
           </li>
-          {!loginReducer.result && (
+          {!loginReducer.isAuthenticated ? (
             <>
               <li className="item button">
                 <a href="/">Log In</a>
@@ -34,12 +45,18 @@ export default function Navbar() {
                 <a href="/">Sign Up</a>
               </li>
             </>
-          )}
-          {loginReducer.result && (
+          ) : (
             <>
-              <li className="item button secondary">
-                <a href="/">Logout</a>
-              </li>
+            <li className="item button secondary">
+              <a
+                href="/"
+                onClick={(e) => {
+                  dispatch(loginAction.logout());
+                }}
+              >
+                Logout
+              </a>
+            </li>
             </>
           )}
           <li className="item button">

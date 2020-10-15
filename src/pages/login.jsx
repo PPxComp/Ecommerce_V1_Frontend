@@ -2,20 +2,15 @@ import React, { useState } from "react";
 import { Box, TextField, Typography, Button } from "@material-ui/core";
 import * as loginActions from "../actions/login.action";
 import { useDispatch } from "react-redux";
-// import axios from "axios";
+import Alert from "@material-ui/lab/Alert";
+import { useSelector } from "react-redux";
 export default function Login(props) {
+  const loginReducer = useSelector(({ loginReducer }) => loginReducer);
   const dispatch = useDispatch();
   const [account, setAccount] = useState({
     username: "",
     password: "",
   });
-  const sendLogin = async ({ username, password }) => {
-    // const data = {
-    //   username,
-    //   password,
-    // };
-    
-  };
   return (
     <div>
       <Box
@@ -96,14 +91,21 @@ export default function Login(props) {
                 />
               </Box>
             </Box>
-            <Box height="30%" alignItems="center" display="flex">
+            <Box height="10%" width="45%" minWidth="300">
+                  {loginReducer.error && (
+                    <>
+                      <Alert severity="error">
+                        {loginReducer.result}
+                      </Alert>
+                    </>
+                  )}
+                </Box>
+            <Box height="20%" alignItems="center" display="flex">
               <Button
                 variant="contained"
                 color="primary"
                 onClick={(e) => {
-                  e.preventDefault();
-                  dispatch(loginActions.login({ ...account, ...props }));
-                  sendLogin({ ...account });
+                 dispatch(loginActions.login({...account,...props}))
                 }}
               >
                 Submit
