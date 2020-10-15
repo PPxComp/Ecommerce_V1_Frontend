@@ -12,7 +12,7 @@ export default function AddStock() {
     name: "",
     price: 0,
     count: 0,
-    img: "",
+    img: null,
     catagory: "",
   });
   return (
@@ -149,6 +149,9 @@ export default function AddStock() {
                       </optgroup>
                     </NativeSelect>
                   </Box>
+                </Box>
+                <Box marginTop="2em">
+                <input type="file" name="myImage" onChange= {(e) => console.log(e.target.files[0])} />
                 </Box>
               </Box>
             </Box>
