@@ -3,6 +3,8 @@ const initialState = {
   isFetching: false,
   error: false,
   isAuthenticated: false,
+  isAdmin: false,
+  user: "",
 };
 
 export default (state = initialState, { type, payload }) => {
@@ -27,6 +29,11 @@ export default (state = initialState, { type, payload }) => {
       };
     case "LOGOUT":
       return "initialState";
+    case "SET_CURRENT_USER":
+      return {
+        ...state,
+        user: payload,
+      };
     default:
       return state;
   }

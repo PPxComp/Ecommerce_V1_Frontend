@@ -6,8 +6,12 @@ import {
   Button,
   NativeSelect,
 } from "@material-ui/core";
+import { useDispatch } from "react-redux";
+import * as addstockActions from "../actions/addstock.action";
+
 import { storage } from "../firebase/firebase";
 export default function AddStock() {
+  const dispatch = useDispatch();
   const [data, setData] = useState({
     name: "",
     price: 0,
@@ -15,7 +19,7 @@ export default function AddStock() {
     img: null,
     catagory: "",
   });
-  function snapshot(params) {}
+
   const [image, setImage] = useState(null);
   const handleImage = (e) => {
     if (e.target.files[0]) {
@@ -182,8 +186,10 @@ export default function AddStock() {
               <Button
                 variant="contained"
                 color="primary"
-                onClick={
-                  handleUpload
+                onClick={(e) =>  {
+                  // handleUpload
+                  dispatch(addstockActions.addStock({...data}))
+                }
                 }
               >
                 Add stock

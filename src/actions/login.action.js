@@ -18,6 +18,11 @@ export const setStateToLogout = () => ({
   type: "LOGOUT",
 });
 
+export const setCurrentUser = (payload) => ({
+  type: "SET_CURRENT_USER",
+  payload,
+});
+
 export const login = ({ username, password, history }) => {
   return async (dispatch) => {
     dispatch(setStateToFetching());
@@ -44,6 +49,7 @@ export const login = ({ username, password, history }) => {
       localStorage.setItem("accessToken", result.data.accessToken);
       setAuthorizationToken(result.data.accessToken);
       dispatch(setStateToSuccess(result.data.message));
+      // dispatch(setCurrentUser())
       history.push("/");
     } catch (error) {
       if (error.response.data.statusCode === 404) {
