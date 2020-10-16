@@ -1,5 +1,4 @@
 import React from "react";
-import "./index.css";
 import Navbar from "./components/Navbar/navbar.jsx";
 import Register from "./pages/register";
 import Login from "./pages/login.jsx";
@@ -11,10 +10,8 @@ import "dotenv";
 function App() {
   return (
     <>
-      {console.log(process.env)}
-      {console.log("s")}
-      <Navbar />
       <BrowserRouter>
+        <Navbar />
         <Switch>
           <Route exact path="/" component={() => <Redirect to="/stock" />} />
           <Route path="/login" component={Login} />

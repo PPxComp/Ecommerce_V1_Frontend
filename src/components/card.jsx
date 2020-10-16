@@ -5,7 +5,7 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { Box } from "@material-ui/core";
 
-export default function CardComponent() {
+export default function CardComponent({img,catagoty,_id,name,price,count}) {
   return (
     <div>
       <Box
@@ -28,7 +28,7 @@ export default function CardComponent() {
           </Box>
           <CardContent>
             <Typography gutterBottom variant="h5" component="h2" align="center">
-              Product name
+              {name}
             </Typography>
             <Typography
               variant="body2"
@@ -36,7 +36,7 @@ export default function CardComponent() {
               component="p"
               align="center"
             >
-              Price
+              {price}
             </Typography>
           </CardContent>
           <Box marginX="auto" width="70%" align="center" marginBottom="1em">

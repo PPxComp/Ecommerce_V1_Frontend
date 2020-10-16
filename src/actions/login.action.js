@@ -45,7 +45,7 @@ export const login = ({ username, password, history }) => {
           withCredentials: true,
         }
       );
-      console.log(result.data);
+      // console.log(result.data);
       localStorage.setItem("accessToken", result.data.accessToken);
       setAuthorizationToken(result.data.accessToken);
       dispatch(setStateToSuccess(result.data.message));
@@ -66,9 +66,15 @@ export const hasError = (payload) => {
   };
 };
 
-export const logout = () => {
-  return (dispatch) => {
+export const logout = ({ history }) => {
+  return async (dispatch) => {
     dispatch(setStateToLogout());
     localStorage.removeItem("accessToken");
+    try {
+      await axios.post("http://localhost:9000/auth/logout");
+      history.push("/");
+    } catch (error) {
+      console.log(error);
+    }
   };
 };

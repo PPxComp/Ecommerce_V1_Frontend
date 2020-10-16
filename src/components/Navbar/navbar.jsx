@@ -4,8 +4,10 @@ import $ from "jquery";
 import { useDispatch } from "react-redux";
 import * as loginAction from "../../actions/login.action";
 import { useSelector } from "react-redux";
+import { Box, Button } from "@material-ui/core";
+import { withRouter } from "react-router-dom";
 
-export default function Navbar() {
+function Navbar(props) {
   const dispatch = useDispatch();
   const loginReducer = useSelector(({ loginReducer }) => loginReducer);
   window.$ = $;
@@ -27,34 +29,54 @@ export default function Navbar() {
 
   return (
     <div>
-      <nav>
+      <nav className="gg">
         <ul className="menu">
           <li className="logo">
-            <a href="/">PPxEcom</a>
+            <a href="/stock">PPxEcom</a>
           </li>
           <li className="item">
-            <a href="/">Stock</a>
+            <a href="/stock">Stock</a>
           </li>
           {!loginReducer.isAuthenticated ? (
             <>
               <li className="item button">
-                <a href="/">Log In</a>
+              <Box color="white">
+                  <Button variant="contained"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      props.history.push("/login")
+                    }}
+                  >
+                    Login
+                  </Button>
+                </Box>
               </li>
               <li className="item button secondary">
-                <a href="/">Sign Up</a>
+              <Box color="white">
+                  <Button variant="contained"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      props.history.push("/register")
+                    }}
+                  >
+                    Sign up
+                  </Button>
+                </Box>
               </li>
             </>
           ) : (
             <>
               <li className="item button secondary">
-                <a
-                  href="/"
-                  onClick={(e) => {
-                    dispatch(loginAction.logout());
-                  }}
-                >
-                  Logout
-                </a>
+                <Box color="white">
+                  <Button variant="contained"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      dispatch(loginAction.logout({ ...props }));
+                    }}
+                  >
+                    Logout
+                  </Button>
+                </Box>
               </li>
             </>
           )}
@@ -69,3 +91,4 @@ export default function Navbar() {
     </div>
   );
 }
+export default withRouter(Navbar);
