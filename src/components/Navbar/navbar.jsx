@@ -23,7 +23,6 @@ export default function Navbar() {
   }, []);
   useEffect(() => {
     $(".item").removeClass("active");
-    console.log("do");
   }, [loginReducer.isAuthenticated]);
 
   return (

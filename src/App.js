@@ -7,9 +7,12 @@ import Stock from "./pages/stock";
 import StockById from "./pages/stockById";
 import AddStock from "./pages/addStock";
 import { BrowserRouter, Route, Redirect, Switch } from "react-router-dom";
+import "dotenv";
 function App() {
   return (
     <>
+      {console.log(process.env)}
+      {console.log("s")}
       <Navbar />
       <BrowserRouter>
         <Switch>

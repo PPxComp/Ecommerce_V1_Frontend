@@ -6,7 +6,7 @@ import {
   Button,
   NativeSelect,
 } from "@material-ui/core";
-
+import { storage } from "../firebase/firebase";
 export default function AddStock() {
   const [data, setData] = useState({
     name: "",
@@ -15,6 +15,32 @@ export default function AddStock() {
     img: null,
     catagory: "",
   });
+  function snapshot(params) {}
+  const [image, setImage] = useState(null);
+  const handleImage = (e) => {
+    if (e.target.files[0]) {
+      setImage(e.target.files[0]);
+    }
+  };
+  const handleUpload = () => {
+    const uploadTask = storage.ref(`images/${image.name}`).put(image);
+    uploadTask.on(
+      "state_changed",
+      
+      (error) => {
+        console.log(error);
+      },
+      () => {
+        storage
+          .ref("images")
+          .child(image.name)
+          .getDownloadURL()
+          .then((url) => {
+            console.log(url);
+          });
+      }
+    );
+  };
   return (
     <div>
       <Box
@@ -111,11 +137,7 @@ export default function AddStock() {
                     />
                   </Box>
                 </Box>
-                <Box
-                  marginTop="1em"
-                  display="flex"
-                  width="100%"
-                >
+                <Box marginTop="1em" display="flex" width="100%">
                   Catagory
                   <Box width="70%">
                     <NativeSelect
@@ -151,7 +173,7 @@ export default function AddStock() {
                   </Box>
                 </Box>
                 <Box marginTop="2em">
-                <input type="file" name="myImage" onChange= {(e) => console.log(e.target.files[0])} />
+                  <input type="file" name="myImage" onChange={handleImage} />
                 </Box>
               </Box>
             </Box>
@@ -160,7 +182,9 @@ export default function AddStock() {
               <Button
                 variant="contained"
                 color="primary"
-                onClick={() => console.log(JSON.stringify(data))}
+                onClick={
+                  handleUpload
+                }
               >
                 Add stock
               </Button>
