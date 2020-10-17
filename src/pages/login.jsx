@@ -2,38 +2,17 @@ import React, { useState } from "react";
 import { Box, TextField, Typography, Button } from "@material-ui/core";
 import * as loginActions from "../actions/login.action";
 import { useDispatch } from "react-redux";
-import axios from "axios";
+import Alert from "@material-ui/lab/Alert";
+import { useSelector } from "react-redux";
+// import { Pagination } from "@material-ui/lab";
+
 export default function Login(props) {
+  const loginReducer = useSelector(({ loginReducer }) => loginReducer);
   const dispatch = useDispatch();
   const [account, setAccount] = useState({
     username: "",
     password: "",
   });
-  const sendLogin = async ({ username, password }) => {
-    const data = {
-      username,
-      password,
-    };
-    axios
-      .post(
-        "http://localhost:8080/onlineshopping/login",
-        {
-          data,
-        },
-        {
-          headers: {
-            // "Content-Type": "application/x-www-form-urlencoded",
-            "Access-Control-Allow-Origin": "*"
-          },
-        }
-      )
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  };
   return (
     <div>
       <Box
@@ -114,14 +93,21 @@ export default function Login(props) {
                 />
               </Box>
             </Box>
-            <Box height="30%" alignItems="center" display="flex">
+            <Box height="10%" width="45%" minWidth="300">
+                  {loginReducer.error && (
+                    <>
+                      <Alert severity="error">
+                        {loginReducer.result}
+                      </Alert>
+                    </>
+                  )}
+                </Box>
+            <Box height="20%" alignItems="center" display="flex">
               <Button
                 variant="contained"
                 color="primary"
                 onClick={(e) => {
-                  e.preventDefault();
-                  dispatch(loginActions.login({ ...account, ...props }));
-                  sendLogin({ ...account });
+                 dispatch(loginActions.login({...account,...props}))
                 }}
               >
                 Submit
