@@ -15,6 +15,7 @@ const store = createStore(reducers, middlewares);
 if (localStorage.getItem("accessToken")) {
   setAuthrization(localStorage.getItem("accessToken"));
   store.dispatch(loginAction.setStateToSuccess("already login"));
+  console.log("login");
 }
 
 ReactDOM.render(
