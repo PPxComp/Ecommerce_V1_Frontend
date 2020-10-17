@@ -1,15 +1,25 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, {  useEffect } from "react";
 import { Pagination } from "@material-ui/lab";
-import {Box} from "@material-ui/core"
-export default function Paginations() {
+import { withRouter } from "react-router-dom";
+
+const Paginations =(props) => {
     const [page, setPage] = React.useState(1);
-    const handleChange = (event, value) => {
-      setPage(value);
-    };
   return (
     <>
-    
+    <Pagination
+            count={props.count}
+            siblingCount={1}
+            page={props.defaultpage ? props.defaultpage : 1 }
+            boundaryCount={1}
+            color="secondary"
+            shape="rounded"
+            onChange={(event,value) => {
+                props.history.push(`/stock?page=${value}`)
+            }}
+           
+          />
       
     </>
   );
 }
+export default withRouter(Paginations)

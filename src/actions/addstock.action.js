@@ -1,4 +1,5 @@
 import axios from "axios";
+import { storage } from "../firebase/firebase";
 
 export const setStateToSuccess = (payload) => ({
   type: "ADD_STOCK_SUCCESS",
@@ -14,7 +15,7 @@ export const setStateToFetching = () => ({
   type: "ADD_STOCK_FETCHING",
 });
 
-export const addStock = ({ name, price, count, img, catagory }) => {
+export const addStock = ({ name, price, count, img, catagory, image }) => {
   return async (dispatch) => {
     const data = {
       name,
@@ -35,6 +36,22 @@ export const addStock = ({ name, price, count, img, catagory }) => {
         withCredentials: true,
       });
       console.log(result.data);
+      // const uploadTask = storage.ref(`images/reusu`).put(image);
+      // uploadTask.on(
+      //   "state_changed",
+      //   (error) => {
+      //     console.log(error);
+      //   },
+      //   () => {
+      //     storage
+      //       .ref("images")
+      //       .child(image.name)
+      //       .getDownloadURL()
+      //       .then((url) => {
+      //         console.log(url);
+      //       });
+      //   }
+      // );
     } catch (error) {
       console.log(error);
       if (error.response.data.statusCode === 400) {

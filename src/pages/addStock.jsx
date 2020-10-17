@@ -8,7 +8,6 @@ import {
 } from "@material-ui/core";
 import { useDispatch } from "react-redux";
 import * as addstockActions from "../actions/addstock.action";
-
 import { storage } from "../firebase/firebase";
 export default function AddStock() {
   const dispatch = useDispatch();
@@ -188,7 +187,7 @@ export default function AddStock() {
                 color="primary"
                 onClick={(e) =>  {
                   // handleUpload
-                  dispatch(addstockActions.addStock({...data}))
+                  dispatch(addstockActions.addStock({...data,image}))
                 }
                 }
               >
