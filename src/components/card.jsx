@@ -5,7 +5,7 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { Box } from "@material-ui/core";
 
-export default function CardComponent({img,catagoty,_id,name,price,count}) {
+export default function CardComponent({description,catagoty,_id,name,price,count}) {
   return (
     <div>
       <Box

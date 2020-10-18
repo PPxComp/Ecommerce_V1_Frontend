@@ -15,13 +15,20 @@ export const setStateToFetching = () => ({
   type: "ADD_STOCK_FETCHING",
 });
 
-export const addStock = ({ name, price, count, img, catagory, image }) => {
+export const addStock = ({
+  name,
+  price,
+  count,
+  description,
+  catagory,
+  image,
+}) => {
   return async (dispatch) => {
     const data = {
       name,
       price,
       count,
-      img,
+      description,
       catagory,
     };
     try {
