@@ -3,7 +3,6 @@ const initialState = {
   isFetching: false,
   error: false,
   isAuthenticated: false,
-  isAdmin: false,
   user: "",
 };
 

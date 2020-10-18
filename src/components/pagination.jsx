@@ -1,9 +1,8 @@
-import React, {  useEffect } from "react";
+import React from "react";
 import { Pagination } from "@material-ui/lab";
 import { withRouter } from "react-router-dom";
 
 const Paginations =(props) => {
-    const [page, setPage] = React.useState(1);
   return (
     <>
     <Pagination

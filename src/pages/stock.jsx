@@ -7,7 +7,7 @@ export default function Stock(props) {
   const [allData, setAllData] = useState([]);
   const [count, setCount] = useState(0);
   const [defaultpage, setDefaultpage] = useState(1);
-  const itemPerPage = 10;
+  const itemPerPage = 12;
   useEffect(() => {
     const query = new URLSearchParams(props.location.search);
     setDefaultpage(query.get("page") ? parseInt(query.get("page")) : 1);

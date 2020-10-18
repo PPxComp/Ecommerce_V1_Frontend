@@ -47,7 +47,15 @@ export const login = ({ username, password, history }) => {
       );
       // console.log(result.data);
       localStorage.setItem("accessToken", result.data.accessToken);
+
       setAuthorizationToken(result.data.accessToken);
+      const result2 = await axios.get("http://localhost:9000/user/me", {
+        headers: {
+          Authorization: `Bearer ${result.data.accessToken}`,
+        },
+      });
+      localStorage.setItem("isAdmin", result2.data.isAdmin);
+
       dispatch(setStateToSuccess(result.data.message));
       // dispatch(setCurrentUser())
       history.push("/");
@@ -69,9 +77,35 @@ export const hasError = (payload) => {
 export const logout = ({ history }) => {
   return async (dispatch) => {
     dispatch(setStateToLogout());
-    localStorage.removeItem("accessToken");
+
     try {
-      await axios.post("http://localhost:9000/auth/logout");
+      // const result = await axios.post("http://localhost:9000/auth/logout", {
+      //   headers: {
+      //     "Content-Type": "application/json;charset=UTF-8",
+      //     "Access-Control-Allow-Origin": "*",
+      //     "Access-Control-Allow-Credentials": true,
+      //     Accept: "application/json",
+      //     "X-Requested-With": "XMLHttpRequest",
+      //   },
+      //   withCredentials: true,
+      // });
+      const res = await axios.post("http://localhost:9000/auth/logout", {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE",
+          "Access-Control-Allow-Headers":
+            "access-control-allow-credentials,access-control-allow-origin,content-type,x-requested-with",
+          "Content-Type": "application/json;charset=UTF-8",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Credentials": true,
+          Accept: "application/json",
+          "X-Requested-With": "XMLHttpRequest",
+        },
+        withCredentials: true,
+      });
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("isAdmin");
+      // console.log(res);
       history.push("/");
     } catch (error) {
       console.log(error);

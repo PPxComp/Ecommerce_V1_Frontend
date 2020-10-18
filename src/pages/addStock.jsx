@@ -15,7 +15,7 @@ export default function AddStock() {
     name: "",
     price: 0,
     count: 0,
-    img: null,
+    description: "",
     catagory: "",
   });
 
@@ -26,10 +26,10 @@ export default function AddStock() {
     }
   };
   const handleUpload = () => {
-    const uploadTask = storage.ref(`images/${image.name}`).put(image);
+    const uploadTask = storage.ref(`${image.name}`).put(image);
     uploadTask.on(
       "state_changed",
-      
+
       (error) => {
         console.log(error);
       },
@@ -50,13 +50,12 @@ export default function AddStock() {
         width="100%"
         display="flex"
         justifyContent="center"
-        height="90vh"
+        marginTop="6em"
         alignItems="center"
       >
         <Box
           maxWidth="sm"
           width="1100px"
-          height="80%"
           display="flex"
           flexDirection="row"
           justifyContent="center"
@@ -76,6 +75,7 @@ export default function AddStock() {
               fontSize="30px"
               height="30%"
               // border="2px solid red"
+              marginTop="2em"
               display="flex"
               alignItems="center"
             >
@@ -83,6 +83,7 @@ export default function AddStock() {
             </Box>
             <Box
               // border="2px solid green"
+              marginTop="3em"
               justifyContent="center"
               height="40%"
               width="40%"
@@ -105,6 +106,18 @@ export default function AddStock() {
                     shrink: true,
                   }}
                 />
+                <Typography>Description</Typography>
+                <TextField
+                  fullWidth
+                  id="outlined-multiline-static"
+                  multiline
+                  rows={5}
+                  value={data.description}
+                  onChange={(e) =>
+                    setData({ ...data, description: e.target.value })
+                  }
+                  variant="outlined"
+                />
                 <Box display="flex" justifyContent="space-between">
                   <Box display="flex" flexDirection="column" width="40%">
                     <Typography>Price</Typography>
@@ -118,7 +131,7 @@ export default function AddStock() {
                       }}
                       value={data.price}
                       onChange={(e) => {
-                        setData({ ...data, price: e.target.value });
+                        setData({ ...data, price: parseInt(e.target.value) });
                       }}
                     />
                   </Box>
@@ -135,7 +148,7 @@ export default function AddStock() {
                       }}
                       value={data.count}
                       onChange={(e) => {
-                        setData({ ...data, count: e.target.value });
+                        setData({ ...data, count: parseInt(e.target.value) });
                       }}
                     />
                   </Box>
@@ -180,18 +193,21 @@ export default function AddStock() {
                 </Box>
               </Box>
             </Box>
-            <Box height="10%" width="45%" minWidth="300"></Box>
-            <Box height="20%" alignItems="center" display="flex">
+            <Box height="4vh" width="45%" minWidth="300"></Box>
+            <Box
+              marginBottom="4em"
+              alignItems="center"
+              display="flex"
+              marginTop="4em"
+            >
               <Button
                 variant="contained"
                 color="primary"
-                onClick={(e) =>  {
-                  // handleUpload
-                  dispatch(addstockActions.addStock({...data,image}))
-                }
-                }
+                onClick={(e) => {
+                  dispatch(addstockActions.addStock({ ...data, image }));
+                }}
               >
-                Add stock
+                Add stock #{JSON.stringify(data)}
               </Button>
             </Box>
           </Box>
