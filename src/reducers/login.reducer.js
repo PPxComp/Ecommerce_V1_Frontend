@@ -4,6 +4,7 @@ const initialState = {
   error: false,
   isAuthenticated: false,
   user: "",
+  isAdmin: false,
 };
 
 export default (state = initialState, { type, payload }) => {
@@ -28,10 +29,10 @@ export default (state = initialState, { type, payload }) => {
       };
     case "LOGOUT":
       return "initialState";
-    case "SET_CURRENT_USER":
+    case "SET_ADMIN":
       return {
         ...state,
-        user: payload,
+        isAdmin: payload,
       };
     default:
       return state;

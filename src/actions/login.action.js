@@ -23,6 +23,15 @@ export const setCurrentUser = (payload) => ({
   payload,
 });
 
+export const setStateAdmin = (payload) => ({
+  type: "SET_ADMIN",
+  payload,
+});
+export const setAdmin = (payload) => {
+  return (dispatch) => {
+    dispatch(setStateAdmin(payload));
+  };
+};
 export const login = ({ username, password, history }) => {
   return async (dispatch) => {
     dispatch(setStateToFetching());
@@ -55,10 +64,13 @@ export const login = ({ username, password, history }) => {
         },
       });
       localStorage.setItem("isAdmin", result2.data.isAdmin);
-
+      dispatch(setStateAdmin(result2.data.isAdmin));
       dispatch(setStateToSuccess(result.data.message));
-      // dispatch(setCurrentUser())
-      history.push("/");
+      if (result2.data.isAdmin) {
+        history.push("/editstock");
+      } else {
+        history.push("/stock");
+      }
     } catch (error) {
       if (error.response.data.statusCode === 404) {
         dispatch(setStateToFailed(error.response.data.message));
@@ -89,7 +101,7 @@ export const logout = ({ history }) => {
       //   },
       //   withCredentials: true,
       // });
-      const res = await axios.post("http://localhost:9000/auth/logout", {
+      const res = await axios.post("http://localhost:9000/auth/logout", null, {
         headers: {
           "Access-Control-Allow-Origin": "*",
           "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE",

@@ -5,16 +5,16 @@ import { useDispatch } from "react-redux";
 import * as loginAction from "../../actions/login.action";
 import { useSelector } from "react-redux";
 import { Box, Button } from "@material-ui/core";
-import { withRouter } from "react-router-dom";
+import { useHistory, withRouter } from "react-router-dom";
 
 function Navbar(props) {
   const dispatch = useDispatch();
+  const history = useHistory();
   const loginReducer = useSelector(({ loginReducer }) => loginReducer);
   window.$ = $;
   useEffect(() => {
     $(function () {
       $(".toggle").on("click", function () {
-        console.log("ASd");
         if ($(".item").hasClass("active")) {
           $(".item").removeClass("active");
         } else {
@@ -27,6 +27,112 @@ function Navbar(props) {
     $(".item").removeClass("active");
   }, [loginReducer.isAuthenticated]);
 
+  const checkPermission = () => {
+    if (!loginReducer.isAuthenticated) {
+      return (
+        <>
+          <li className="item">
+            <a href="/stock">Stock</a>
+          </li>
+          <li className="item button">
+            <Box color="white">
+              <Button
+                variant="contained"
+                onClick={(e) => {
+                  e.preventDefault();
+                  props.history.push("/login");
+                }}
+              >
+                Login
+              </Button>
+            </Box>
+          </li>
+          <li className="item button secondary">
+            <Box color="white">
+              <Button
+                variant="contained"
+                onClick={(e) => {
+                  e.preventDefault();
+                  props.history.push("/register");
+                }}
+              >
+                Sign up
+              </Button>
+            </Box>
+          </li>
+          <li className="item button">
+            <a href="/">ตระกร้า</a>
+          </li>
+        </>
+      );
+    } else if (loginReducer.isAdmin === true) {
+      return (
+        <>
+          <li className="item button secondary">
+            <Box color="white">
+              <Button
+                variant="contained"
+                onClick={(e) => {
+                  history.push("/editstock");
+                }}
+              >
+                StockEdit
+              </Button>
+            </Box>
+          </li>
+          <li className="item button secondary">
+            <Box color="white">
+              <Button
+                variant="contained"
+                // onClick={(e) => {
+
+                // }}
+              >
+                Give Admin
+              </Button>
+            </Box>
+          </li>
+          <li className="item button secondary">
+            <Box color="white">
+              <Button
+                variant="contained"
+                onClick={(e) => {
+                  e.preventDefault();
+                  dispatch(loginAction.logout({ ...props }));
+                }}
+              >
+                Logout
+              </Button>
+            </Box>
+          </li>
+        </>
+      );
+    } else if (loginReducer.isAdmin === false) {
+      return (
+        <>
+          <li className="item">
+            <a href="/stock">Stock</a>
+          </li>
+          <li className="item button secondary">
+            <Box color="white">
+              <Button
+                variant="contained"
+                onClick={(e) => {
+                  e.preventDefault();
+                  dispatch(loginAction.logout({ ...props }));
+                }}
+              >
+                Logout
+              </Button>
+            </Box>
+          </li>
+          <li className="item button">
+            <a href="/">ตระกร้า</a>
+          </li>
+        </>
+      );
+    }
+  };
   return (
     <div>
       <nav className="gg">
@@ -34,55 +140,7 @@ function Navbar(props) {
           <li className="logo">
             <a href="/stock">PPxEcom</a>
           </li>
-          <li className="item">
-            <a href="/stock">Stock</a>
-          </li>
-          {!loginReducer.isAuthenticated ? (
-            <>
-              <li className="item button">
-              <Box color="white">
-                  <Button variant="contained"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      props.history.push("/login")
-                    }}
-                  >
-                    Login
-                  </Button>
-                </Box>
-              </li>
-              <li className="item button secondary">
-              <Box color="white">
-                  <Button variant="contained"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      props.history.push("/register")
-                    }}
-                  >
-                    Sign up
-                  </Button>
-                </Box>
-              </li>
-            </>
-          ) : (
-            <>
-              <li className="item button secondary">
-                <Box color="white">
-                  <Button variant="contained"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      dispatch(loginAction.logout({ ...props }));
-                    }}
-                  >
-                    Logout
-                  </Button>
-                </Box>
-              </li>
-            </>
-          )}
-          <li className="item button">
-            <a href="/">ตระกร้า</a>
-          </li>
+          {checkPermission()}
           <li className="toggle">
             <span className="bars"></span>
           </li>

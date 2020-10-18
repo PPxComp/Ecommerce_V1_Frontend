@@ -5,6 +5,7 @@ import {
   Typography,
   Button,
   NativeSelect,
+  
 } from "@material-ui/core";
 import { useDispatch } from "react-redux";
 import * as addstockActions from "../actions/addstock.action";
@@ -26,7 +27,7 @@ export default function AddStock() {
     }
   };
   const handleUpload = () => {
-    const uploadTask = storage.ref(`${image.name}`).put(image);
+    const uploadTask = storage.ref(`img/${image.name}`).put(image);
     uploadTask.on(
       "state_changed",
 
@@ -113,9 +114,7 @@ export default function AddStock() {
                   multiline
                   rows={5}
                   value={data.description}
-                  onChange={(e) =>
-                    setData({ ...data, description: e.target.value })
-                  }
+                  onChange={(e) => setData({ ...data, description: e.target.value })}
                   variant="outlined"
                 />
                 <Box display="flex" justifyContent="space-between">
@@ -148,7 +147,7 @@ export default function AddStock() {
                       }}
                       value={data.count}
                       onChange={(e) => {
-                        setData({ ...data, count: parseInt(e.target.value) });
+                        setData({ ...data, count:  parseInt(e.target.value) });
                       }}
                     />
                   </Box>
@@ -203,11 +202,16 @@ export default function AddStock() {
               <Button
                 variant="contained"
                 color="primary"
-                onClick={(e) => {
-                  dispatch(addstockActions.addStock({ ...data, image }));
-                }}
+                onClick={handleUpload
+                //   (e) => {
+                //   dispatch(addstockActions.addStock({ ...data, image }));
+                // }
+                  
+                  
+                  
+                }
               >
-                Add stock #{JSON.stringify(data)}
+                Add stock
               </Button>
             </Box>
           </Box>

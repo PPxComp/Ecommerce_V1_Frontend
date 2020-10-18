@@ -14,8 +14,15 @@ const store = createStore(reducers, middlewares);
 
 if (localStorage.getItem("accessToken")) {
   setAuthrization(localStorage.getItem("accessToken"));
+  if (
+    localStorage.getItem("isAdmin") &&
+    localStorage.getItem("isAdmin") === "true"
+  ) {
+    store.dispatch(loginAction.setStateAdmin(true));
+  } else {
+    store.dispatch(loginAction.setStateAdmin(false));
+  }
   store.dispatch(loginAction.setStateToSuccess("already login"));
-  console.log("login");
 }
 
 ReactDOM.render(
