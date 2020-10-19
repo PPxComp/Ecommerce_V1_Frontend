@@ -5,12 +5,10 @@ import {
   Typography,
   Button,
   NativeSelect,
-  
 } from "@material-ui/core";
 import { useDispatch } from "react-redux";
 import * as addstockActions from "../actions/addstock.action";
-import { storage } from "../firebase/firebase";
-export default function AddStock() {
+export default function AddStock(props) {
   const dispatch = useDispatch();
   const [data, setData] = useState({
     name: "",
@@ -25,25 +23,6 @@ export default function AddStock() {
     if (e.target.files[0]) {
       setImage(e.target.files[0]);
     }
-  };
-  const handleUpload = () => {
-    const uploadTask = storage.ref(`img/${image.name}`).put(image);
-    uploadTask.on(
-      "state_changed",
-
-      (error) => {
-        console.log(error);
-      },
-      () => {
-        storage
-          .ref("images")
-          .child(image.name)
-          .getDownloadURL()
-          .then((url) => {
-            console.log(url);
-          });
-      }
-    );
   };
   return (
     <div>
@@ -114,7 +93,9 @@ export default function AddStock() {
                   multiline
                   rows={5}
                   value={data.description}
-                  onChange={(e) => setData({ ...data, description: e.target.value })}
+                  onChange={(e) =>
+                    setData({ ...data, description: e.target.value })
+                  }
                   variant="outlined"
                 />
                 <Box display="flex" justifyContent="space-between">
@@ -147,7 +128,7 @@ export default function AddStock() {
                       }}
                       value={data.count}
                       onChange={(e) => {
-                        setData({ ...data, count:  parseInt(e.target.value) });
+                        setData({ ...data, count: parseInt(e.target.value) });
                       }}
                     />
                   </Box>
@@ -202,14 +183,10 @@ export default function AddStock() {
               <Button
                 variant="contained"
                 color="primary"
-                onClick={handleUpload
-                //   (e) => {
-                //   dispatch(addstockActions.addStock({ ...data, image }));
-                // }
-                  
-                  
-                  
-                }
+                onClick={(e) => {
+                  dispatch(addstockActions.addStock({ ...data, image }));
+                  props.history.push('/addstock')
+                }}
               >
                 Add stock
               </Button>

@@ -43,22 +43,22 @@ export const addStock = ({
         withCredentials: true,
       });
       console.log(result.data);
-      // const uploadTask = storage.ref(`images/reusu`).put(image);
-      // uploadTask.on(
-      //   "state_changed",
-      //   (error) => {
-      //     console.log(error);
-      //   },
-      //   () => {
-      //     storage
-      //       .ref("images")
-      //       .child(image.name)
-      //       .getDownloadURL()
-      //       .then((url) => {
-      //         console.log(url);
-      //       });
-      //   }
-      // );
+      const uploadTask = storage.ref(`img/${result.data._id}`).put(image);
+      uploadTask.on(
+        "state_changed",
+        (error) => {
+          console.log(error);
+        },
+        () => {
+          storage
+            .ref("images")
+            .child(image.name)
+            .getDownloadURL()
+            .then((url) => {
+              console.log(url);
+            });
+        }
+      );
     } catch (error) {
       console.log(error);
       if (error.response.data.statusCode === 400) {

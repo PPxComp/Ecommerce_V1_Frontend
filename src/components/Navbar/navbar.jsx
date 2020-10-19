@@ -84,6 +84,18 @@ function Navbar(props) {
             <Box color="white">
               <Button
                 variant="contained"
+                onClick={(e) => {
+                  history.push("/addstock");
+                }}
+              >
+                Add Stock
+              </Button>
+            </Box>
+          </li>
+          <li className="item button secondary">
+            <Box color="white">
+              <Button
+                variant="contained"
                 // onClick={(e) => {
 
                 // }}

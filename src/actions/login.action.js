@@ -89,21 +89,9 @@ export const hasError = (payload) => {
 export const logout = ({ history }) => {
   return async (dispatch) => {
     dispatch(setStateToLogout());
-
     try {
-      // const result = await axios.post("http://localhost:9000/auth/logout", {
-      //   headers: {
-      //     "Content-Type": "application/json;charset=UTF-8",
-      //     "Access-Control-Allow-Origin": "*",
-      //     "Access-Control-Allow-Credentials": true,
-      //     Accept: "application/json",
-      //     "X-Requested-With": "XMLHttpRequest",
-      //   },
-      //   withCredentials: true,
-      // });
-      const res = await axios.post("http://localhost:9000/auth/logout", null, {
+      await axios.post("http://localhost:9000/auth/logout", null, {
         headers: {
-          "Access-Control-Allow-Origin": "*",
           "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE",
           "Access-Control-Allow-Headers":
             "access-control-allow-credentials,access-control-allow-origin,content-type,x-requested-with",
@@ -117,7 +105,6 @@ export const logout = ({ history }) => {
       });
       localStorage.removeItem("accessToken");
       localStorage.removeItem("isAdmin");
-      // console.log(res);
       history.push("/");
     } catch (error) {
       console.log(error);
