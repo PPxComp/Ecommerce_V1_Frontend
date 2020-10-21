@@ -34,9 +34,10 @@ export default function CardComponent({
 
             //// handle with 404
             // if (error.statusCode === 404) {
-            //   console.log("no");
+              console.log(error);
             // }
             // console.log("error.status", error.serverResponse_.error.status);
+            setImage('');
           }
         );
     }

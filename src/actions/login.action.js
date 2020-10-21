@@ -56,7 +56,7 @@ export const login = ({ username, password, history }) => {
       );
       // console.log(result.data);
       localStorage.setItem("accessToken", result.data.accessToken);
-
+      localStorage.setItem("firebaseToken", result.data.firebaseToken);
       setAuthorizationToken(result.data.accessToken);
       const result2 = await axios.get("http://localhost:9000/user/me", {
         headers: {
@@ -103,6 +103,7 @@ export const logout = ({ history }) => {
         },
         withCredentials: true,
       });
+      localStorage.removeItem("firebaseToken");
       localStorage.removeItem("accessToken");
       localStorage.removeItem("isAdmin");
       history.push("/");

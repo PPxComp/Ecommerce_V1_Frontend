@@ -1,5 +1,8 @@
 import axios from "axios";
 import { storage } from "../firebase/firebase";
+import firebase from "firebase/app";
+import "firebase/auth";
+import jwt_decode from "jwt-decode";
 
 export const setStateToSuccess = (payload) => ({
   type: "ADD_STOCK_SUCCESS",
@@ -42,33 +45,30 @@ export const addStock = ({
         },
         withCredentials: true,
       });
-      console.log(result.data);
+      // // console.log(result.data);
+      const { uid } = jwt_decode(localStorage.getItem("firebaseToken"));
       const uploadTask = storage.ref(`img/${result.data._id}`).put(image);
-      uploadTask.on(
-        "state_changed",
-        (error) => {
-          console.log(error);
-        },
-        () => {
-          storage
-            .ref("images")
-            .child(image.name)
-            .getDownloadURL()
-            .then((url) => {
-              console.log(url);
-            });
-        }
-      );
+      console.log(uid);
+      if (uid === "admin") {
+        await firebase
+          .auth()
+          .signInWithCustomToken(localStorage.getItem("firebaseToken"))
+          .then(function (data) {
+            uploadTask.on("state_changed");
+          });
+        await firebase.auth.logout();
+      } else {
+        throw new Error("uid");
+      }
     } catch (error) {
-      console.log(error);
+      if (error === "uid") {
+        dispatch(setStateToFailed("You don't have permission"));
+      }
       if (error.response.data.statusCode === 400) {
-        //didn,t have permission
         dispatch(setStateToFailed(error.response.data.message));
-        console.log(error.response.data);
       }
       if (error.response.data.statusCode === 401) {
         dispatch(setStateToFailed(error.response.data.message));
-        console.log(error.response.data); // unautherized
       }
     }
   };
