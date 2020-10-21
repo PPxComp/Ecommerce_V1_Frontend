@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {  useState,useCallback, useEffect } from "react";
 import {
   Box,
   TextField,
@@ -6,9 +6,14 @@ import {
   Button,
   NativeSelect,
 } from "@material-ui/core";
+import Alert from "@material-ui/lab/Alert";
+
 import { useDispatch } from "react-redux";
 import * as addstockActions from "../actions/addstock.action";
+import { useSelector } from "react-redux";
+
 export default function AddStock(props) {
+  const addStockReducer = useSelector(({ addStockReducer }) => addStockReducer);
   const dispatch = useDispatch();
   const [data, setData] = useState({
     name: "",
@@ -24,6 +29,30 @@ export default function AddStock(props) {
       setImage(e.target.files[0]);
     }
   };
+ useEffect(() => {
+   dispatch(addstockActions.setStateDefaultNoti());
+ }, [dispatch])
+
+  const checkNoti = 
+    () => {
+      if(addStockReducer.notification){
+        if(addStockReducer.error){
+          return(<><Alert severity="error">{addStockReducer.result}</Alert>
+          </>)
+
+        }else if(addStockReducer.success){
+          return(<><Alert severity="success">{addStockReducer.result}</Alert>
+          </>)
+        }
+      }
+    }
+  const clear = () => {
+    setData({name: "",
+    price: 0,
+    count: 0,
+    description: "",
+    catagory: ""})
+  }
   return (
     <div>
       <Box
@@ -173,19 +202,23 @@ export default function AddStock(props) {
                 </Box>
               </Box>
             </Box>
-            <Box height="4vh" width="45%" minWidth="300"></Box>
+            <Box height="4vh" width="45%" marginTop="2em" minWidth="300">
+              {checkNoti()}
+      
+            </Box>
             <Box
               marginBottom="4em"
               alignItems="center"
               display="flex"
-              marginTop="4em"
+              marginTop="3em"
             >
               <Button
                 variant="contained"
                 color="primary"
-                onClick={(e) => {
-                  dispatch(addstockActions.addStock({ ...data, image }));
-                  props.history.push('/addstock')
+                onClick={async (e) => {
+                 await dispatch(addstockActions.addStock({ ...data, image }));
+                  // props.history.push("/addstock");
+                  clear()
                 }}
               >
                 Add stock

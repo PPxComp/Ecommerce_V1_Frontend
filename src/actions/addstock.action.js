@@ -17,6 +17,9 @@ export const setStateToFailed = (payload) => ({
 export const setStateToFetching = () => ({
   type: "ADD_STOCK_FETCHING",
 });
+export const setStateDefaultNoti = () => ({
+  type: "ADD_STOCK_DEFAULT_NOTI",
+});
 
 export const addStock = ({
   name,
@@ -35,6 +38,7 @@ export const addStock = ({
       catagory,
     };
     try {
+      dispatch(setStateToFetching());
       const result = await axios.post("http://localhost:9000/stock", data, {
         headers: {
           "Content-Type": "application/json;charset=UTF-8",
@@ -48,7 +52,7 @@ export const addStock = ({
       // // console.log(result.data);
       const { uid } = jwt_decode(localStorage.getItem("firebaseToken"));
       const uploadTask = storage.ref(`img/${result.data._id}`).put(image);
-      console.log(uid);
+      // console.log(uid);
       if (uid === "admin") {
         await firebase
           .auth()
@@ -56,19 +60,23 @@ export const addStock = ({
           .then(function (data) {
             uploadTask.on("state_changed");
           });
-        await firebase.auth.logout();
+        // await firebase.auth().signOut();
+        dispatch(setStateToSuccess("Add stock complete!"));
       } else {
         throw new Error("uid");
       }
     } catch (error) {
+      console.log(error);
       if (error === "uid") {
         dispatch(setStateToFailed("You don't have permission"));
       }
-      if (error.response.data.statusCode === 400) {
-        dispatch(setStateToFailed(error.response.data.message));
-      }
-      if (error.response.data.statusCode === 401) {
-        dispatch(setStateToFailed(error.response.data.message));
+      if (error.response) {
+        if (error.response.data.statusCode === 400) {
+          dispatch(setStateToFailed(error.response.data.message));
+        }
+        if (error.response.data.statusCode === 401) {
+          dispatch(setStateToFailed(error.response.data.message));
+        }
       }
     }
   };
