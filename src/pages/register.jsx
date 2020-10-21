@@ -23,7 +23,7 @@ export default function Register() {
       password,
     };
     axios
-      .post("http://localhost:9000/user", data, {
+      .post(`${process.env.REACT_APP_API_URL}/user`, data, {
         headers: {
           "Content-Type": "application/json;charset=UTF-8",
           "Access-Control-Allow-Origin": "*",

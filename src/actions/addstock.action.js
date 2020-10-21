@@ -39,16 +39,20 @@ export const addStock = ({
     };
     try {
       dispatch(setStateToFetching());
-      const result = await axios.post("http://localhost:9000/stock", data, {
-        headers: {
-          "Content-Type": "application/json;charset=UTF-8",
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Credentials": true,
-          Accept: "application/json",
-          "X-Requested-With": "XMLHttpRequest",
-        },
-        withCredentials: true,
-      });
+      const result = await axios.post(
+        `${process.env.REACT_APP_API_URL}/stock`,
+        data,
+        {
+          headers: {
+            "Content-Type": "application/json;charset=UTF-8",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Credentials": true,
+            Accept: "application/json",
+            "X-Requested-With": "XMLHttpRequest",
+          },
+          withCredentials: true,
+        }
+      );
       const { uid } = jwt_decode(localStorage.getItem("firebaseToken"));
       const uploadTask = storage.ref(`img/${result.data._id}`).put(image);
       if (uid === "admin") {

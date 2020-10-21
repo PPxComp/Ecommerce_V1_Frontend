@@ -14,9 +14,8 @@ export default function Stock(props) {
     async function GetData() {
       try {
         let p = query.get("page") ? query.get("page") - 1 : 0;
-        console.log(p*12);
         const res = await axios.get(
-          `http://localhost:9000/stock?start=${p * 12}`
+          `${process.env.REACT_APP_API_URL}/stock?start=${p * 12}`
         );
         setAllData(res.data.data);
         setCount(Math.ceil(res.data.count / itemPerPage));

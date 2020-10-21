@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { DataGrid } from "@material-ui/data-grid";
+import { Box } from "@material-ui/core";
+import MaterialTable from "material-table";
 import axios from "axios";
 
 const columns = [
@@ -57,6 +58,43 @@ const rows = [
 ];
 
 export default function DataTable() {
+  const [columns, setColumns] = useState([
+    { title: "Product Name", field: "name" },
+    { title: "Price", field: "price", type: "numeric" },
+    {
+      title: "Number of product",
+      field: "count",
+      type: "numeric",
+    },
+  ]);
+
+  const [data, setData] = useState([
+    { name: "test1", price: 30, count: 5 },
+    { name: "test1", price: 30, count: 5 },
+    { name: "test1", price: 30, count: 5 },
+    { name: "test1", price: 30, count: 5 },
+    { name: "test1", price: 30, count: 5 },
+    { name: "test1", price: 30, count: 5 },
+    { name: "test1", price: 30, count: 5 },
+    { name: "test1", price: 30, count: 5 },
+    { name: "test1", price: 30, count: 5 },
+    { name: "test1", price: 30, count: 5 },
+    { name: "test1", price: 30, count: 5 },
+    { name: "test1", price: 30, count: 5 },
+    { name: "test1", price: 30, count: 5 },
+    { name: "test1", price: 30, count: 5 },
+    { name: "test1", price: 30, count: 5 },
+    { name: "test1", price: 30, count: 5 },
+    { name: "test1", price: 30, count: 5 },
+    { name: "test1", price: 30, count: 5 },
+    { name: "test1", price: 30, count: 5 },
+    { name: "test1", price: 30, count: 5 },
+    { name: "test1", price: 30, count: 5 },
+    { name: "test1", price: 30, count: 5 },
+    { name: "test1", price: 30, count: 5 },
+    { name: "test1", price: 30, count: 5 },
+  ]);
+
   const [rowlist, setrowList] = useState([]);
   const [selected, setSelected] = useState([]);
   const handleRowSelected = (e) => {
@@ -71,39 +109,79 @@ export default function DataTable() {
       }
     }
   };
-  const  handleRowSelected2 = (e) => {
+  const handleRowSelected2 = (e) => {
     var array = [];
-    for(const x in e.rows){
-        array.push(e.rows[x].id)
+    for (const x in e.rows) {
+      array.push(e.rows[x].id);
     }
-    setSelected(array)
+    setSelected(array);
   };
   useEffect(() => {
     async function GetData() {
-      try {
-        const res = await axios.get(`http://localhost:9000/stock?start=0`);
-        console.log(res.data.data);
-        setrowList(res.data.data);
-      } catch (error) {
-        console.log(error);
-      }
+      // try {
+      //   const res = await axios.get(`${process.env.REACT_APP_API_URL}/stock/admin/stock/start=0`);
+      //   console.log(res.data.data);
+      //   setrowList(res.data.data);
+      // } catch (error) {
+      //   console.log(error);
+      // }
     }
     GetData();
   }, []);
 
   return (
-    <div style={{ height: 400, width: "100%" }}>
-      <DataGrid
+    <Box height="100%" width="80%"  >
+      {/* <DataGrid
         rows={rows}
         columns={columns}
         pageSize={5}
+        
         checkboxSelection
         onSelectionChange={handleRowSelected2}
         onRowSelected={handleRowSelected}
-      />
+      /> */}
       {/* {rowlist} */}
-      {JSON.stringify(selected)}
+      <MaterialTable
+        title="Editable Stock"
+        columns={columns}
+        data={data}
+        search={false}
+        options={{
+          search: false,
+          selection:true,
+          minBodyHeight:"64vh",
+          paginationType:"stepped",
+          pageSizeOptions:[15],
+          pageSize:15
+        }}
+        
+        minBodyHeigh="100%"
+        height="100%"
+        editable={{
+          onRowUpdate: (newData, oldData) =>
+            new Promise((resolve, reject) => {
+              setTimeout(() => {
+                const dataUpdate = [...data];
+                const index = oldData.tableData.id;
+                dataUpdate[index] = newData;
+                setData([...dataUpdate]);
 
-    </div>
+                resolve();
+              }, 1000);
+            }),
+          onRowDelete: (oldData) =>
+            new Promise((resolve, reject) => {
+              setTimeout(() => {
+                const dataDelete = [...data];
+                const index = oldData.tableData.id;
+                dataDelete.splice(index, 1);
+                setData([...dataDelete]);
+
+                resolve();
+              }, 1000);
+            }),
+        }}
+      />
+    </Box>
   );
 }

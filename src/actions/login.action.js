@@ -41,7 +41,7 @@ export const login = ({ username, password, history }) => {
     };
     try {
       const result = await axios.post(
-        "http://localhost:9000/auth/login",
+        `${process.env.REACT_APP_API_URL}/auth/login`,
         data,
         {
           headers: {
@@ -58,11 +58,14 @@ export const login = ({ username, password, history }) => {
       localStorage.setItem("accessToken", result.data.accessToken);
       localStorage.setItem("firebaseToken", result.data.firebaseToken);
       setAuthorizationToken(result.data.accessToken);
-      const result2 = await axios.get("http://localhost:9000/user/me", {
-        headers: {
-          Authorization: `Bearer ${result.data.accessToken}`,
-        },
-      });
+      const result2 = await axios.get(
+        `${process.env.REACT_APP_API_URL}/user/me`,
+        {
+          headers: {
+            Authorization: `Bearer ${result.data.accessToken}`,
+          },
+        }
+      );
       localStorage.setItem("isAdmin", result2.data.isAdmin);
       dispatch(setStateAdmin(result2.data.isAdmin));
       dispatch(setStateToSuccess(result.data.message));
@@ -90,7 +93,7 @@ export const logout = ({ history }) => {
   return async (dispatch) => {
     dispatch(setStateToLogout());
     try {
-      await axios.post("http://localhost:9000/auth/logout", null, {
+      await axios.post(`${process.env.REACT_APP_API_URL}/auth/logout`, null, {
         headers: {
           "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE",
           "Access-Control-Allow-Headers":
