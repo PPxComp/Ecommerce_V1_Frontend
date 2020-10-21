@@ -49,10 +49,8 @@ export const addStock = ({
         },
         withCredentials: true,
       });
-      // // console.log(result.data);
       const { uid } = jwt_decode(localStorage.getItem("firebaseToken"));
       const uploadTask = storage.ref(`img/${result.data._id}`).put(image);
-      // console.log(uid);
       if (uid === "admin") {
         await firebase
           .auth()
@@ -60,23 +58,23 @@ export const addStock = ({
           .then(function (data) {
             uploadTask.on("state_changed");
           });
-        // await firebase.auth().signOut();
+        await firebase.auth().signOut();
         dispatch(setStateToSuccess("Add stock complete!"));
       } else {
         throw new Error("uid");
       }
     } catch (error) {
-      console.log(error);
       if (error === "uid") {
         dispatch(setStateToFailed("You don't have permission"));
-      }
-      if (error.response) {
+      } else if (error.response) {
         if (error.response.data.statusCode === 400) {
           dispatch(setStateToFailed(error.response.data.message));
         }
         if (error.response.data.statusCode === 401) {
           dispatch(setStateToFailed(error.response.data.message));
         }
+      } else {
+        dispatch(setStateToFailed("You don't have permission"));
       }
     }
   };

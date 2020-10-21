@@ -1,4 +1,4 @@
-import React, {  useState,useCallback, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   TextField,
@@ -29,30 +29,30 @@ export default function AddStock(props) {
       setImage(e.target.files[0]);
     }
   };
- useEffect(() => {
-   dispatch(addstockActions.setStateDefaultNoti());
- }, [dispatch])
+  useEffect(() => {
+    dispatch(addstockActions.setStateDefaultNoti());
+  }, [dispatch]);
 
-  const checkNoti = 
-    () => {
-      if(addStockReducer.notification){
-        if(addStockReducer.error){
-          return(<><Alert severity="error">{addStockReducer.result}</Alert>
-          </>)
-
-        }else if(addStockReducer.success){
-          return(<><Alert severity="success">{addStockReducer.result}</Alert>
-          </>)
-        }
+  const checkNoti = () => {
+    if (addStockReducer.notification) {
+      if (addStockReducer.error) {
+        return (
+          <>
+            <Alert severity="error">{addStockReducer.result}</Alert>
+          </>
+        );
+      } else if (addStockReducer.success) {
+        return (
+          <>
+            <Alert severity="success">{addStockReducer.result}</Alert>
+          </>
+        );
       }
     }
+  };
   const clear = () => {
-    setData({name: "",
-    price: 0,
-    count: 0,
-    description: "",
-    catagory: ""})
-  }
+    setData({ name: "", price: 0, count: 0, description: "", catagory: "" });
+  };
   return (
     <div>
       <Box
@@ -83,7 +83,6 @@ export default function AddStock(props) {
             <Box
               fontSize="30px"
               height="30%"
-              // border="2px solid red"
               marginTop="2em"
               display="flex"
               alignItems="center"
@@ -91,7 +90,6 @@ export default function AddStock(props) {
               Add stock
             </Box>
             <Box
-              // border="2px solid green"
               marginTop="3em"
               justifyContent="center"
               height="40%"
@@ -204,7 +202,6 @@ export default function AddStock(props) {
             </Box>
             <Box height="4vh" width="45%" marginTop="2em" minWidth="300">
               {checkNoti()}
-      
             </Box>
             <Box
               marginBottom="4em"
@@ -216,9 +213,8 @@ export default function AddStock(props) {
                 variant="contained"
                 color="primary"
                 onClick={async (e) => {
-                 await dispatch(addstockActions.addStock({ ...data, image }));
-                  // props.history.push("/addstock");
-                  clear()
+                  await dispatch(addstockActions.addStock({ ...data, image }));
+                  clear();
                 }}
               >
                 Add stock
