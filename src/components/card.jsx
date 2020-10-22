@@ -5,6 +5,7 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { Box } from "@material-ui/core";
 import firebase from "../firebase/firebase";
+import axios from "axios"
 export default function CardComponent({
   description,
   catagoty,
@@ -17,30 +18,33 @@ export default function CardComponent({
   const [image, setImage] = useState("");
 
   useEffect(() => {
-    const storageRef = firebase.app().storage().ref();
-
-    if (_id !== undefined) {
-      const imageRef = storageRef.child(`img/${_id}`);
-      imageRef
-        .getDownloadURL()
-
-        .then(
-          (avatarUrl) => {
-            setImage(avatarUrl);
-          },
-          (error) => {
-            // Handle error here
-            // Show popup with errors or just console.error
-
-            //// handle with 404
-            // if (error.statusCode === 404) {
-              console.log(error);
-            // }
-            // console.log("error.status", error.serverResponse_.error.status);
-            setImage('');
+    async function fetchData(){
+      try {
+        const result = await axios.get(
+          `${process.env.REACT_APP_API_URL}/firebase/${_id}`
+        )
+        // console.log(result);
+        if(result.data){
+          const storageRef = firebase.app().storage().ref();
+          if (_id !== undefined) {
+            const imageRef = storageRef.child(`img/${_id}`);
+            imageRef
+              .getDownloadURL()
+              .then(
+                (avatarUrl) => {
+                  setImage(avatarUrl);
+                },
+                (error) => {
+                  setImage('');
+                }
+              );
           }
-        );
+        }
+      }catch(error){
+        console.log(error);
+      }
     }
+    fetchData()
   }, [_id]);
   return (
     <div>
