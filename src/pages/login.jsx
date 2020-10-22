@@ -4,7 +4,6 @@ import * as loginActions from "../actions/login.action";
 import { useDispatch } from "react-redux";
 import Alert from "@material-ui/lab/Alert";
 import { useSelector } from "react-redux";
-// import { Pagination } from "@material-ui/lab";
 
 export default function Login(props) {
   const loginReducer = useSelector(({ loginReducer }) => loginReducer);

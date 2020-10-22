@@ -1,9 +1,26 @@
-import React, { useState } from "react";
-import TablePagination from "../components/tablePagination";
+import React, { useState, useEffect } from "react";
 import { Box } from "@material-ui/core";
 import MaterialTable from "material-table";
+import axios from "axios";
+import tableIcons from "../components/tableIcon";
+import Alert from "@material-ui/lab/Alert";
 
 export default function EditStock() {
+  const [permission, setPermission] = useState(true);
+  useEffect(() => {
+    async function GetData() {
+      try {
+        const res = await axios.get(
+          `${process.env.REACT_APP_API_URL}/stock/admin/stock?start=0`
+        );
+        console.log(res.data.data);
+        setData(res.data.data);
+      } catch (error) {
+        setPermission(false);
+      }
+    }
+    GetData();
+  }, []);
   const [columns, setColumns] = useState([
     { title: "Product Name", field: "name" },
     { title: "Price", field: "price", type: "numeric" },
@@ -14,32 +31,7 @@ export default function EditStock() {
     },
   ]);
 
-  const [data, setData] = useState([
-    { name: "test1", price: 30, count: 5 },
-    { name: "test1", price: 30, count: 5 },
-    { name: "test1", price: 30, count: 5 },
-    { name: "test1", price: 30, count: 5 },
-    { name: "test1", price: 30, count: 5 },
-    { name: "test1", price: 30, count: 5 },
-    { name: "test1", price: 30, count: 5 },
-    { name: "test1", price: 30, count: 5 },
-    { name: "test1", price: 30, count: 5 },
-    { name: "test1", price: 30, count: 5 },
-    { name: "test1", price: 30, count: 5 },
-    { name: "test1", price: 30, count: 5 },
-    { name: "test1", price: 30, count: 5 },
-    { name: "test1", price: 30, count: 5 },
-    { name: "test1", price: 30, count: 5 },
-    { name: "test1", price: 30, count: 5 },
-    { name: "test1", price: 30, count: 5 },
-    { name: "test1", price: 30, count: 5 },
-    { name: "test1", price: 30, count: 5 },
-    { name: "test1", price: 30, count: 5 },
-    { name: "test1", price: 30, count: 5 },
-    { name: "test1", price: 30, count: 5 },
-    { name: "test1", price: 30, count: 5 },
-    { name: "test1", price: 30, count: 5 },
-  ]);
+  const [data, setData] = useState([]);
 
   return (
     <>
@@ -52,9 +44,15 @@ export default function EditStock() {
         alignItems="center"
         boxSizing="border-box"
         maxWidth="sm"
-        
       >
         <h1>Edit Stock</h1>
+        {!permission && (
+          <>
+            <Box marginTop="4em" width="50%" minWidth="300px">
+              <Alert severity="error">You dont't have permission</Alert>
+            </Box>
+          </>
+        )}
         <Box
           width="90%"
           height="80%"
@@ -81,13 +79,14 @@ export default function EditStock() {
                 columns={columns}
                 data={data}
                 search={false}
+                icons={tableIcons}
                 options={{
                   search: false,
                   selection: true,
                   minBodyHeight: "64vh",
                   paginationType: "stepped",
                   pageSizeOptions: [15],
-                  showTitle:false,
+                  showTitle: false,
                   pageSize: 15,
                 }}
                 minBodyHeigh="100%"
