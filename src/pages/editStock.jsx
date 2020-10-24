@@ -6,9 +6,12 @@ import tableIcons from "../components/tableIcon";
 import Alert from "@material-ui/lab/Alert";
 import Edit from "@material-ui/icons/Edit";
 import DeleteOutline from "@material-ui/icons/DeleteOutline";
+import ConfirmModal from "../components/confirmModal";
 
 export default function EditStock(props) {
+  const [id, setId] = useState("");
   const [data, setData] = useState([]);
+  const [open, setOpen] = useState(false);
   const [permission, setPermission] = useState(true);
   useEffect(() => {
     async function GetData() {
@@ -24,7 +27,7 @@ export default function EditStock(props) {
     }
     GetData();
   }, []);
-  const columns= [
+  const columns = [
     { title: "Product Name", field: "name" },
     { title: "Id", field: "id" },
     { title: "Price", field: "price", type: "numeric" },
@@ -97,12 +100,17 @@ export default function EditStock(props) {
                     tooltip: "edit",
                     onClick: (event, rowData) => {
                       console.log(`/editstock/${rowData.id}`);
-                      props.history.push(`/editstock/${rowData.id}`)}
+                      props.history.push(`/editstock/${rowData.id}`);
+                    },
                   }),
                   (rowData) => ({
                     icon: () => <DeleteOutline />,
                     tooltip: "delete",
-                    onClick: (event, rowData) => {console.log(rowData);}
+                    onClick: (event, rowData) => {
+                      console.log(rowData);
+                      setId(rowData.id);
+                      setOpen(true);
+                    },
                   }),
                 ]}
               />
@@ -110,6 +118,7 @@ export default function EditStock(props) {
           </Box>
         </Box>
       </Box>
+      <ConfirmModal setOpen={setOpen} open={open} id={id} />
     </>
   );
 }
