@@ -5,6 +5,7 @@ import Login from "./pages/login.jsx";
 import Stock from "./pages/stock";
 import StockById from "./pages/stockById";
 import AddStock from "./pages/addStock";
+import EditStockById from "./pages/editStockById.jsx";
 import { BrowserRouter, Route, Redirect, Switch } from "react-router-dom";
 import EditStock from "./pages/editStock";
 import "dotenv";
@@ -20,7 +21,8 @@ function App() {
           <Route exact path="/stock" component={Stock} />
           <Route path="/stock/:id" component={StockById} />
           <Route path="/addstock" component={AddStock} />
-          <Route path="/editstock" component={EditStock} />
+          <Route path="/editstock" exact component={EditStock} />
+          <Route path="/editstock/:id" component={EditStockById}/>
           <Route render={() => <Redirect to="/" />} />
         </Switch>
       </BrowserRouter>

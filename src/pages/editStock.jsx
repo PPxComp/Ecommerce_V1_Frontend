@@ -7,7 +7,7 @@ import Alert from "@material-ui/lab/Alert";
 import Edit from "@material-ui/icons/Edit";
 import DeleteOutline from "@material-ui/icons/DeleteOutline";
 
-export default function EditStock() {
+export default function EditStock(props) {
   const [data, setData] = useState([]);
   const [permission, setPermission] = useState(true);
   useEffect(() => {
@@ -100,13 +100,15 @@ export default function EditStock() {
                     // <-- ***NOW A FUNCTION***
                     icon: () => <Edit />,
                     tooltip: "edit",
-                    // onClick: (event, rowData) => handleAction(event, rowData, "abc")
+                    onClick: (event, rowData) => {
+                      console.log(`/editstock/${rowData.id}`);
+                      props.history.push(`/editstock/${rowData.id}`)}
                   }),
                   (rowData) => ({
                     // <-- ***NOW A FUNCTION***
                     icon: () => <DeleteOutline />,
                     tooltip: "delete",
-                    // onClick: (event, rowData) => handleAction(event, rowData, "xyz")
+                    onClick: (event, rowData) => {console.log(rowData);}
                   }),
                 ]}
               />
