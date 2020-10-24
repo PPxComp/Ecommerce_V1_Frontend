@@ -4,10 +4,15 @@ import MaterialTable from "material-table";
 import axios from "axios";
 import tableIcons from "../components/tableIcon";
 import Alert from "@material-ui/lab/Alert";
+import Edit from "@material-ui/icons/Edit";
+import DeleteOutline from "@material-ui/icons/DeleteOutline";
 
 export default function EditStock() {
+  const [data, setData] = useState([]);
   const [permission, setPermission] = useState(true);
   useEffect(() => {
+    // setData(false);
+    // setColumns([])
     async function GetData() {
       try {
         const res = await axios.get(
@@ -19,10 +24,12 @@ export default function EditStock() {
         setPermission(false);
       }
     }
+
     GetData();
   }, []);
   const [columns, setColumns] = useState([
     { title: "Product Name", field: "name" },
+    { title: "Id", field: "id" },
     { title: "Price", field: "price", type: "numeric" },
     {
       title: "Number of product",
@@ -30,8 +37,6 @@ export default function EditStock() {
       type: "numeric",
     },
   ]);
-
-  const [data, setData] = useState([]);
 
   return (
     <>
@@ -80,38 +85,30 @@ export default function EditStock() {
                 data={data}
                 search={false}
                 icons={tableIcons}
+                onClick={(e) => console.log(e)}
                 options={{
                   search: false,
-                  selection: true,
+                  // selection: true,
                   minBodyHeight: "64vh",
                   paginationType: "stepped",
                   pageSizeOptions: [15],
                   showTitle: false,
                   pageSize: 15,
                 }}
-                minBodyHeigh="100%"
-                editable={{
-                  onRowUpdate: (newData, oldData) =>
-                    new Promise((resolve, reject) => {
-                      setTimeout(() => {
-                        const dataUpdate = [...data];
-                        const index = oldData.tableData.id;
-                        dataUpdate[index] = newData;
-                        setData([...dataUpdate]);
-                        resolve();
-                      }, 1000);
-                    }),
-                  onRowDelete: (oldData) =>
-                    new Promise((resolve, reject) => {
-                      setTimeout(() => {
-                        const dataDelete = [...data];
-                        const index = oldData.tableData.id;
-                        dataDelete.splice(index, 1);
-                        setData([...dataDelete]);
-                        resolve();
-                      }, 1000);
-                    }),
-                }}
+                actions={[
+                  (rowData) => ({
+                    // <-- ***NOW A FUNCTION***
+                    icon: () => <Edit />,
+                    tooltip: "edit",
+                    // onClick: (event, rowData) => handleAction(event, rowData, "abc")
+                  }),
+                  (rowData) => ({
+                    // <-- ***NOW A FUNCTION***
+                    icon: () => <DeleteOutline />,
+                    tooltip: "delete",
+                    // onClick: (event, rowData) => handleAction(event, rowData, "xyz")
+                  }),
+                ]}
               />
             </Box>
           </Box>

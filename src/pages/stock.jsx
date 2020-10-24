@@ -3,6 +3,9 @@ import CardComponent from "../components/card";
 import { Box, Container } from "@material-ui/core";
 import axios from "axios";
 import Paginations from "../components/pagination"
+
+
+
 export default function Stock(props) {
   const [allData, setAllData] = useState([]);
   const [count, setCount] = useState(0);
@@ -26,6 +29,8 @@ export default function Stock(props) {
     GetData();
   }, [props.location.search]);
   
+  
+  
   return (
     <div>
       stock
@@ -46,7 +51,6 @@ export default function Stock(props) {
           justifyContent="center"
           marginTop="2em"
         >
-          {defaultpage}
           <Paginations count={count} defaultpage={defaultpage}></Paginations>
           
         </Box>
