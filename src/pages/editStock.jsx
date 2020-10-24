@@ -11,8 +11,6 @@ export default function EditStock(props) {
   const [data, setData] = useState([]);
   const [permission, setPermission] = useState(true);
   useEffect(() => {
-    // setData(false);
-    // setColumns([])
     async function GetData() {
       try {
         const res = await axios.get(
@@ -24,10 +22,9 @@ export default function EditStock(props) {
         setPermission(false);
       }
     }
-
     GetData();
   }, []);
-  const [columns, setColumns] = useState([
+  const columns= [
     { title: "Product Name", field: "name" },
     { title: "Id", field: "id" },
     { title: "Price", field: "price", type: "numeric" },
@@ -36,7 +33,7 @@ export default function EditStock(props) {
       field: "count",
       type: "numeric",
     },
-  ]);
+  ];
 
   return (
     <>
@@ -71,7 +68,6 @@ export default function EditStock(props) {
             width="95%"
             height="100%"
             borderRadius="20px"
-            // boxShadow="4px 4px 9px -2px rgba(61,61,61,0.43)"
             display="flex"
             flexDirection="column"
             alignItems="center"
@@ -97,7 +93,6 @@ export default function EditStock(props) {
                 }}
                 actions={[
                   (rowData) => ({
-                    // <-- ***NOW A FUNCTION***
                     icon: () => <Edit />,
                     tooltip: "edit",
                     onClick: (event, rowData) => {
@@ -105,7 +100,6 @@ export default function EditStock(props) {
                       props.history.push(`/editstock/${rowData.id}`)}
                   }),
                   (rowData) => ({
-                    // <-- ***NOW A FUNCTION***
                     icon: () => <DeleteOutline />,
                     tooltip: "delete",
                     onClick: (event, rowData) => {console.log(rowData);}

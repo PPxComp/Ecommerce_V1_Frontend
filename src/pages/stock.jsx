@@ -52,7 +52,6 @@ export default function Stock(props) {
           marginTop="2em"
         >
           <Paginations count={count} defaultpage={defaultpage}></Paginations>
-          
         </Box>
       </Container>
     </div>

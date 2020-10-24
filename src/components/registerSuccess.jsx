@@ -16,7 +16,6 @@ function RegisterSuccess({ username, password, history }) {
         <Box
           fontSize="30px"
           height="30%"
-          // border="2px solid red"
           display="flex"
           alignItems="center"
           justifyContent="center"
@@ -24,7 +23,6 @@ function RegisterSuccess({ username, password, history }) {
           Register Success!
         </Box>
         <Box
-          // border="2px solid green"
           justifyContent="center"
           height="30%"
           width="40%"

@@ -192,8 +192,7 @@ export default function EditStockById(props) {
                 variant="contained"
                 color="primary"
                 onClick={async (e) => {
-                  //   await dispatch(addstockActions.addStock({ ...data, image }));
-                  //   clear();
+                  
                 }}
               >
                 Submit
