@@ -6,7 +6,6 @@ import {
   Button,
   NativeSelect,
 } from "@material-ui/core";
-// import Alert from "@material-ui/lab/Alert";
 import axios from "axios";
 export default function EditStockById(props) {
   const [data, setData] = useState({
@@ -17,21 +16,31 @@ export default function EditStockById(props) {
     catagory: "",
   });
   useEffect(() => {
+    let isMounted = true;
+    if(isMounted){
     axios
       .get(`${process.env.REACT_APP_API_URL}/stock/` + props.match.params.id)
       .then((res) => {
-          setData({...data,
-        name:res.data.name,
-        price:res.data.price,
-        count:res.data.count,
-        description:res.data.description,
-        catagory:res.data.catagory
-    })
-      }).catch((error) => {
-          console.log(error);
+        if (isMounted) {
+          setData({
+            ...data,
+            name: res.data.name,
+            price: res.data.price,
+            count: res.data.count,
+            description: res.data.description,
+            catagory: res.data.catagory,
+          });
+        }
       })
+      .catch((error) => {
+        console.log(error);
+      });
     // console.log(x);
-  }, [props.match.params.id,data]);
+    return () => {
+      isMounted = false;
+    };
+  }
+  }, [props.match.params.id, data]);
   return (
     <>
       <Box
@@ -85,8 +94,8 @@ export default function EditStockById(props) {
                   style={{ margin: 8 }}
                   placeholder="product name..."
                   fullWidth
-                    value={data.name}
-                    onChange={(e) => setData({ ...data, name: e.target.value })}
+                  value={data.name}
+                  onChange={(e) => setData({ ...data, name: e.target.value })}
                   margin="normal"
                   InputLabelProps={{
                     shrink: true,
@@ -98,10 +107,10 @@ export default function EditStockById(props) {
                   id="outlined-multiline-static"
                   multiline
                   rows={5}
-                    value={data.description}
-                    onChange={(e) =>
-                      setData({ ...data, description: e.target.value })
-                    }
+                  value={data.description}
+                  onChange={(e) =>
+                    setData({ ...data, description: e.target.value })
+                  }
                   variant="outlined"
                 />
                 <Box display="flex" justifyContent="space-between">
@@ -115,10 +124,10 @@ export default function EditStockById(props) {
                           step: 1,
                         },
                       }}
-                        value={data.price}
-                        onChange={(e) => {
-                          setData({ ...data, price: parseInt(e.target.value) });
-                        }}
+                      value={data.price}
+                      onChange={(e) => {
+                        setData({ ...data, price: parseInt(e.target.value) });
+                      }}
                     />
                   </Box>
                   <Box display="flex" flexDirection="column" width="40%">
@@ -132,10 +141,10 @@ export default function EditStockById(props) {
                           step: 1,
                         },
                       }}
-                        value={data.count}
-                        onChange={(e) => {
-                          setData({ ...data, count: parseInt(e.target.value) });
-                        }}
+                      value={data.count}
+                      onChange={(e) => {
+                        setData({ ...data, count: parseInt(e.target.value) });
+                      }}
                     />
                   </Box>
                 </Box>
@@ -143,10 +152,10 @@ export default function EditStockById(props) {
                   Catagory
                   <Box width="70%">
                     <NativeSelect
-                        value={data.catagory}
-                        onChange={(e) =>
-                          setData({ ...data, catagory: e.target.value })
-                        }
+                      value={data.catagory}
+                      onChange={(e) =>
+                        setData({ ...data, catagory: e.target.value })
+                      }
                       name="age"
                       fullWidth
                       inputProps={{ "aria-label": "age" }}
@@ -191,9 +200,7 @@ export default function EditStockById(props) {
               <Button
                 variant="contained"
                 color="primary"
-                onClick={async (e) => {
-                  
-                }}
+                // onClick={async (e) => {}}
               >
                 Submit
               </Button>

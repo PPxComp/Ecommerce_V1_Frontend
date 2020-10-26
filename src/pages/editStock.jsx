@@ -19,7 +19,6 @@ export default function EditStock(props) {
         const res = await axios.get(
           `${process.env.REACT_APP_API_URL}/stock/admin/stock?start=0`
         );
-        console.log(res.data.data);
         setData(res.data.data);
       } catch (error) {
         setPermission(false);
