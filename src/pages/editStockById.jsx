@@ -7,7 +7,10 @@ import {
   NativeSelect,
 } from "@material-ui/core";
 import axios from "axios";
+import firebase from "../firebase/firebase";
+
 export default function EditStockById(props) {
+  const [prevImage, setprevImage] = useState(null)
   const [data, setData] = useState({
     name: "",
     price: 0,
@@ -15,32 +18,67 @@ export default function EditStockById(props) {
     description: "",
     catagory: "",
   });
+  const [image, setImage] = useState(null);
+  const handleImage = (e) => {
+    if (e.target.files[0]) {
+      setImage(e.target.files[0]);
+      setprevImage(URL.createObjectURL(e.target.files[0]));
+    }
+  };
   useEffect(() => {
     let isMounted = true;
-    if(isMounted){
-    axios
-      .get(`${process.env.REACT_APP_API_URL}/stock/` + props.match.params.id)
-      .then((res) => {
-        if (isMounted) {
-          setData({
-            ...data,
-            name: res.data.name,
-            price: res.data.price,
-            count: res.data.count,
-            description: res.data.description,
-            catagory: res.data.catagory,
-          });
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    // console.log(x);
-    return () => {
-      isMounted = false;
-    };
-  }
+    if (isMounted) {
+      axios
+        .get(`${process.env.REACT_APP_API_URL}/stock/` + props.match.params.id)
+        .then((res) => {
+          if (isMounted) {
+            setData({
+              ...data,
+              name: res.data.name,
+              price: res.data.price,
+              count: res.data.count,
+              description: res.data.description,
+              catagory: res.data.catagory,
+            });
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      // console.log(x);
+      return () => {
+        isMounted = false;
+      };
+    }
   }, [props.match.params.id, data]);
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const result = await axios.get(
+          `${process.env.REACT_APP_API_URL}/firebase/${props.match.params.id}`
+        );
+        if (result.data) {
+          const storageRef = firebase.app().storage().ref();
+          if (props.match.params.id !== undefined) {
+            const imageRef = storageRef.child(`img/${props.match.params.id}`);
+            imageRef.getDownloadURL().then(
+              (avatarUrl) => {
+                setImage(avatarUrl);
+                setprevImage(avatarUrl);
+              },
+              (error) => {
+                setImage(null);
+                setprevImage(null);
+              }
+            );
+          }
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchData();
+  }, [props.match.params.id]);
   return (
     <>
       <Box
@@ -184,7 +222,16 @@ export default function EditStockById(props) {
                   </Box>
                 </Box>
                 <Box marginTop="2em">
-                  {/* <input type="file" name="myImage" onChange={handleImage} /> */}
+                  <input type="file" name="myImage" onChange={handleImage} />
+                  {!prevImage ? null : (
+                    <>
+                      <img
+                        style={{ width: "6em" }}
+                        src={image ? (prevImage) : null}
+                        alt={image ? "image" : null}
+                      />
+                    </>
+                  )}
                 </Box>
               </Box>
             </Box>

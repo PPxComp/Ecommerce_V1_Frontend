@@ -74,7 +74,6 @@ export const addStock = ({
           dispatch(setStateToSuccess("Add stock complete!"));
         } catch (error) {
           console.log(error);
-
           dispatch(setStateToFailed(error));
         }
       } else {

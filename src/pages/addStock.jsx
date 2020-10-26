@@ -52,6 +52,7 @@ export default function AddStock(props) {
   };
   const clear = () => {
     setData({ name: "", price: 0, count: 0, description: "", catagory: "" });
+    setImage(null);
   };
   return (
     <div>
@@ -197,6 +198,7 @@ export default function AddStock(props) {
                 </Box>
                 <Box marginTop="2em">
                   <input type="file" name="myImage" onChange={handleImage} />
+                  {!image ? null:(<><img style={{width:"6em"}} src={image? URL.createObjectURL(image) : null} alt={image? image.name : null}/></>)}
                 </Box>
               </Box>
             </Box>
