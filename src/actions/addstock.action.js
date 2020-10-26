@@ -67,11 +67,14 @@ export const addStock = ({
               uploadTask.on("state_changed");
             })
             .catch(function (error) {
+              console.log(error);
               dispatch(setStateToFailed(error));
             });
           await firebase.auth().signOut();
           dispatch(setStateToSuccess("Add stock complete!"));
         } catch (error) {
+          console.log(error);
+
           dispatch(setStateToFailed(error));
         }
       } else {

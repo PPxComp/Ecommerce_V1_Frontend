@@ -5,7 +5,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import axios from "axios";
  
-export default function ResponsiveDialog({ open, setOpen, id}) {
+export default function ResponsiveDialog({ open, setOpen, id,setneed}) {
   const handleClose = () => {
     setOpen(false);
   };
@@ -14,6 +14,7 @@ export default function ResponsiveDialog({ open, setOpen, id}) {
     );
     console.log(res);
     handleClose();
+    setneed(true);
   }
 
   return (

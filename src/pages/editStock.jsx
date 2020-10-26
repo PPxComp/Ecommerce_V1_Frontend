@@ -10,6 +10,7 @@ import ConfirmModal from "../components/confirmModal";
 
 export default function EditStock(props) {
   const [id, setId] = useState("");
+  const [needRender, setneedRender] = useState(true)
   const [data, setData] = useState([]);
   const [open, setOpen] = useState(false);
   const [permission, setPermission] = useState(true);
@@ -24,8 +25,9 @@ export default function EditStock(props) {
         setPermission(false);
       }
     }
-    GetData();
-  }, []);
+    if(needRender){GetData()};
+    return setneedRender(false)
+  }, [needRender]);
   const columns = [
     { title: "Product Name", field: "name" },
     { title: "Id", field: "id" },
@@ -117,7 +119,7 @@ export default function EditStock(props) {
           </Box>
         </Box>
       </Box>
-      <ConfirmModal setOpen={setOpen} open={open} id={id} />
+      <ConfirmModal setOpen={setOpen} open={open} id={id} setneed={setneedRender} />
     </>
   );
 }
