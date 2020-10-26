@@ -3,11 +3,22 @@ import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import axios from "axios";
 
 export default function ResponsiveDialog({ open, setOpen, id }) {
   const handleClose = () => {
     setOpen(false);
   };
+  async function handleDelete() {
+    const Data ={
+      data:[`${id}`]
+    }
+    const res = await axios.delete(`${process.env.REACT_APP_API_URL}/stock`, 
+      Data
+    );
+    console.log(res);
+    handleClose();
+  }
 
   return (
     <div>
@@ -25,7 +36,7 @@ export default function ResponsiveDialog({ open, setOpen, id }) {
           <Button autoFocus onClick={handleClose} color="primary">
             NO
           </Button>
-          <Button onClick={handleClose} color="primary" variant="contained">
+          <Button onClick={handleDelete} color="primary" variant="contained">
             YES
           </Button>
         </DialogActions>
