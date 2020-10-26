@@ -4,17 +4,13 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import axios from "axios";
-
-export default function ResponsiveDialog({ open, setOpen, id }) {
+ 
+export default function ResponsiveDialog({ open, setOpen, id}) {
   const handleClose = () => {
     setOpen(false);
   };
   async function handleDelete() {
-    const Data ={
-      data:[`${id}`]
-    }
-    const res = await axios.delete(`${process.env.REACT_APP_API_URL}/stock`, 
-      Data
+    const res = await axios.delete(`${process.env.REACT_APP_API_URL}/stock?data=${id}`
     );
     console.log(res);
     handleClose();
