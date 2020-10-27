@@ -45,7 +45,6 @@ export default function CardComponent({
     <div>
       <Box
         width="18em"
-        marginX="2em"
         marginTop="3em"
         display="flex"
         flexDirection="column"

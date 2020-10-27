@@ -2,9 +2,8 @@ import React, { useState, useEffect } from "react";
 import CardComponent from "../components/card";
 import { Box, Container } from "@material-ui/core";
 import axios from "axios";
-import Paginations from "../components/pagination"
-
-
+import Paginations from "../components/pagination";
+import Filter from "../components/filter";
 
 export default function Stock(props) {
   const [allData, setAllData] = useState([]);
@@ -28,13 +27,15 @@ export default function Stock(props) {
     }
     GetData();
   }, [props.location.search]);
-  
-  
-  
+
   return (
     <div>
-      stock
       <Container>
+        <Box align="center" marginTop="2em" marginBottom="2em">
+          <h1>Stock</h1>
+        </Box>
+
+        <Filter />
         <Box
           display="flex"
           flexWrap="wrap"
@@ -42,7 +43,11 @@ export default function Stock(props) {
           alignItems="center"
         >
           {allData.map((data, index) => (
-            <CardComponent {...data} key={index}></CardComponent>
+            <>
+              <Box width="20em" display="flex" justifyContent="center">
+                <CardComponent {...data} key={index}></CardComponent>
+              </Box>
+            </>
           ))}
         </Box>
         <Box
