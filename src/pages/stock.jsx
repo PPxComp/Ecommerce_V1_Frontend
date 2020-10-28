@@ -9,7 +9,13 @@ export default function Stock(props) {
   const [allData, setAllData] = useState([]);
   const [count, setCount] = useState(0);
   const [defaultpage, setDefaultpage] = useState(1);
+  const [orderBy, setOrderBy] = useState("");
+
   const itemPerPage = 12;
+  useEffect(() => {
+    const query = new URLSearchParams(props.location.search);
+    setOrderBy(query.get("orderBy") ? query.get("orderBy") : "currently");
+  }, [props.location.search]);
   useEffect(() => {
     const query = new URLSearchParams(props.location.search);
     setDefaultpage(query.get("page") ? parseInt(query.get("page")) : 1);
@@ -34,21 +40,61 @@ export default function Stock(props) {
         <Box align="center" marginTop="2em" marginBottom="2em">
           <h1>Stock</h1>
         </Box>
+        <Box
+          width="100%"
+          borderTop="2px solid lightgrey"
+          paddingTop="2em"
+          display="flex"
+          justifyContent="flex-end"
+        >
+          <Box minWidth="sm">
+            <Filter orderBy={orderBy} setOrderBy={setOrderBy} />
+          </Box>
+        </Box>
 
-        <Filter />
         <Box
           display="flex"
           flexWrap="wrap"
           justifyContent="space-evenly"
           alignItems="center"
         >
-          {allData.map((data, index) => (
-            <>
-              <Box width="20em" display="flex" justifyContent="center">
-                <CardComponent {...data} key={index}></CardComponent>
+          {orderBy === "currently" &&
+            allData.map((data, index) => (
+              <Box
+                width="20em"
+                key={index}
+                display="flex"
+                justifyContent="center"
+              >
+                <CardComponent {...data}></CardComponent>
               </Box>
-            </>
-          ))}
+            ))}
+          {orderBy === "hightolow" &&
+            allData
+              .sort((a, b) => (a.price < b.price ? 1 : -1))
+              .map((data, index) => (
+                <Box
+                  width="20em"
+                  key={index}
+                  display="flex"
+                  justifyContent="center"
+                >
+                  <CardComponent {...data}></CardComponent>
+                </Box>
+              ))}
+          {orderBy === "lowtohigh" &&
+            allData
+              .sort((a, b) => (a.price > b.price ? 1 : -1))
+              .map((data, index) => (
+                <Box
+                  width="20em"
+                  key={index}
+                  display="flex"
+                  justifyContent="center"
+                >
+                  <CardComponent {...data}></CardComponent>
+                </Box>
+              ))}
         </Box>
         <Box
           width="100%"
