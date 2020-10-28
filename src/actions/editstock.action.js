@@ -5,29 +5,30 @@ import "firebase/auth";
 import jwt_decode from "jwt-decode";
 
 export const setStateToSuccess = (payload) => ({
-  type: "ADD_STOCK_SUCCESS",
+  type: "EDIT_STOCK_SUCCESS",
   payload,
 });
 
 export const setStateToFailed = (payload) => ({
-  type: "ADD_STOCK_FAILED",
+  type: "EDIT_STOCK_FAILED",
   payload,
 });
 
 export const setStateToFetching = () => ({
-  type: "ADD_STOCK_FETCHING",
+  type: "EDIT_STOCK_FETCHING",
 });
 export const setStateDefaultNoti = () => ({
-  type: "ADD_STOCK_DEFAULT_NOTI",
+  type: "EDIT_STOCK_DEFAULT_NOTI",
 });
 
-export const addStock = ({
+export const editStock = ({
   name,
   price,
   count,
   description,
   catagory,
   image,
+  id,
 }) => {
   return async (dispatch) => {
     const data = {
@@ -39,8 +40,8 @@ export const addStock = ({
     };
     try {
       dispatch(setStateToFetching());
-      const result = await axios.post(
-        `${process.env.REACT_APP_API_URL}/stock`,
+      const result = await axios.put(
+        `${process.env.REACT_APP_API_URL}/stock/${id}`,
         data,
         {
           headers: {
@@ -69,20 +70,18 @@ export const addStock = ({
               })
               .catch(function (error) {
                 console.log(error);
-                dispatch(setStateToFailed(error));
+                // dispatch(setStateToFailed(error));
               });
             await firebase.auth().signOut();
-            dispatch(setStateToSuccess("Add stock complete!"));
+            dispatch(setStateToSuccess("Edit stock complete!"));
           } catch (error) {
             console.log(error);
-            dispatch(setStateToFailed(error));
           }
         } else {
           console.log("not uid");
           throw new Error("uid");
         }
       }
-      dispatch(setStateToSuccess("Add stock complete!"));
     } catch (error) {
       console.log(error);
       if (error === "uid") {

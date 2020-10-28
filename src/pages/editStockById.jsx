@@ -8,8 +8,16 @@ import {
 } from "@material-ui/core";
 import axios from "axios";
 import firebase from "../firebase/firebase";
+import Alert from "@material-ui/lab/Alert";
+
+
+import { useDispatch } from "react-redux";
+import * as editstockActions from "../actions/editstock.action";
+import { useSelector } from "react-redux";
 
 export default function EditStockById(props) {
+  const editStockReducer = useSelector(({ editStockReducer }) => editStockReducer);
+  const dispatch = useDispatch();
   const [prevImage, setprevImage] = useState(null)
   const [data, setData] = useState({
     name: "",
@@ -25,6 +33,26 @@ export default function EditStockById(props) {
       setprevImage(URL.createObjectURL(e.target.files[0]));
     }
   };
+  const checkNoti = () => {
+    if (editStockReducer.notification) {
+      if (editStockReducer.error) {
+        return (
+          <>
+            <Alert severity="error">{editStockReducer.result}</Alert>
+          </>
+        );
+      } else if (editStockReducer.success) {
+        return (
+          <>
+            <Alert severity="success">{editStockReducer.result}</Alert>
+          </>
+        );
+      }
+    }
+  };
+  useEffect(() => {
+    dispatch(editstockActions.setStateDefaultNoti());
+  }, [dispatch]);
   useEffect(() => {
     let isMounted = true;
     if (isMounted) {
@@ -33,7 +61,6 @@ export default function EditStockById(props) {
         .then((res) => {
           if (isMounted) {
             setData({
-              ...data,
               name: res.data.name,
               price: res.data.price,
               count: res.data.count,
@@ -50,7 +77,7 @@ export default function EditStockById(props) {
         isMounted = false;
       };
     }
-  }, [props.match.params.id, data]);
+  }, [props.match.params.id]);
   useEffect(() => {
     async function fetchData() {
       try {
@@ -192,7 +219,7 @@ export default function EditStockById(props) {
                     <NativeSelect
                       value={data.catagory}
                       onChange={(e) =>
-                        setData({ ...data, catagory: e.target.value })
+                        setData({ ...data, catagory: e.target.value.split(',') })
                       }
                       name="age"
                       fullWidth
@@ -236,7 +263,7 @@ export default function EditStockById(props) {
               </Box>
             </Box>
             <Box height="4vh" width="45%" marginTop="2em" minWidth="300">
-              {/* {checkNoti()} */}
+              {checkNoti()}
             </Box>
             <Box
               marginBottom="4em"
@@ -247,7 +274,10 @@ export default function EditStockById(props) {
               <Button
                 variant="contained"
                 color="primary"
-                // onClick={async (e) => {}}
+                onClick={async (e) => {
+                  let id = props.match.params.id;
+                  await dispatch(editstockActions.editStock({ ...data, image,id}));
+                }}
               >
                 Submit
               </Button>
