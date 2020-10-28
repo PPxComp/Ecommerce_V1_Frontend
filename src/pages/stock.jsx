@@ -10,20 +10,30 @@ export default function Stock(props) {
   const [count, setCount] = useState(0);
   const [defaultpage, setDefaultpage] = useState(1);
   const [orderBy, setOrderBy] = useState("");
+  const [catagory, setCatagory] = useState([]);
 
   const itemPerPage = 12;
   useEffect(() => {
     const query = new URLSearchParams(props.location.search);
+    setCatagory(query.get("catagory") ? query.get("catagory") : ["All"]);
     setOrderBy(query.get("orderBy") ? query.get("orderBy") : "currently");
   }, [props.location.search]);
+
   useEffect(() => {
     const query = new URLSearchParams(props.location.search);
     setDefaultpage(query.get("page") ? parseInt(query.get("page")) : 1);
     async function GetData() {
+      let path = "";
+      if(query.get("catagory") !== "All"){
+        path = query.get("catagory")
+        ? `&catagory=${query.get("catagory")}`
+        : "";
+      }
+      
       try {
         let p = query.get("page") ? query.get("page") - 1 : 0;
         const res = await axios.get(
-          `${process.env.REACT_APP_API_URL}/stock?start=${p * 12}`
+          `${process.env.REACT_APP_API_URL}/stock?start=${p * 12}${path}`
         );
         setAllData(res.data.data);
         setCount(Math.ceil(res.data.count / itemPerPage));
@@ -48,7 +58,7 @@ export default function Stock(props) {
           justifyContent="flex-end"
         >
           <Box minWidth="sm">
-            <Filter orderBy={orderBy} setOrderBy={setOrderBy} />
+            <Filter catagory={catagory} start={(defaultpage - 1) * 12} />
           </Box>
         </Box>
 
@@ -88,7 +98,7 @@ export default function Stock(props) {
               .map((data, index) => (
                 <Box
                   width="20em"
-                  key={index}
+                  key={data._id}
                   display="flex"
                   justifyContent="center"
                 >

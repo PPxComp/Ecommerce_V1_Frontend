@@ -20,7 +20,7 @@ export default function AddStock(props) {
     price: 0,
     count: 0,
     description: "",
-    catagory: "",
+    catagory: [],
   });
 
   const [image, setImage] = useState(null);
@@ -167,7 +167,7 @@ export default function AddStock(props) {
                     <NativeSelect
                       value={data.catagory}
                       onChange={(e) =>
-                        setData({ ...data, catagory: e.target.value })
+                        setData({ ...data, catagory: e.target.value.split(',') })
                       }
                       name="age"
                       fullWidth

@@ -1,7 +1,15 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
 import { Box, NativeSelect } from "@material-ui/core";
+import { useHistory } from "react-router-dom";
+export default function Filter(props) {
+  const { catagory, start } = props;
+  const [catagories, setCatagories] = useState("");
+  useEffect(() => {
+    
+    setCatagories(catagory)
+  }, [catagory])
 
-export default function Filter({orderBy,setOrderBy}) {
+  const history = useHistory();
   return (
     <div>
       <Box
@@ -16,15 +24,14 @@ export default function Filter({orderBy,setOrderBy}) {
             <h4>Catagory</h4>
           </Box>
           <NativeSelect
-            //   value={data.catagory}
-            //   onChange={(e) =>
-            //     setData({ ...data, catagory: e.target.value })
-            //   }
-            name="age"
-            //   fullWidth
-            inputProps={{ "aria-label": "age" }}
+            value={catagories}
+            onChange={(e) => {
+              history.push(
+                `/stock?start=${start}&catagory=${e.target.value}`
+              );
+            }}
           >
-            <option aria-label="None" value="" />
+            <option value={["All"]}>ทั้งหมด</option>
             <optgroup label="หนังสือ">
               <option value={["หนังสือ", "หนังสือนวนิยาย"]}>
                 หนังสือนวนิยาย
@@ -41,25 +48,24 @@ export default function Filter({orderBy,setOrderBy}) {
           </NativeSelect>
         </Box>
 
-        <Box display="flex" alignItems="center">
+        {/* <Box display="flex" alignItems="center">
           <Box marginRight="1em">
             <h4>Ordered By</h4>
           </Box>
           <NativeSelect
-              value={orderBy}
-            //   onChange={(e) =>
-            //     setData({ ...data, catagory: e.target.value })
-            //   }
-            name="age"
-            //   fullWidth
+            value={orderBy}
+            onChange={(e) => {
+              history.push(
+                `/stock?start=${start}&catagory=${catagory}&orderBy=${e.target.value}`
+              );
+            }}
+            // fullWidth
           >
-            <option aria-label="None" value="" />
-            <option value={["Wallet", "Red Wallet"]}>price low to high</option>
-            <option value={["Wallet", "Black Wallet"]}>
-              price high to low
-            </option>
+            <option value={"currently"}>currently</option>
+            <option value={"lowtohigh"}>price low to high</option>
+            <option value={"hightolow"}>price high to low</option>
           </NativeSelect>
-        </Box>
+        </Box> */}
       </Box>
     </div>
   );

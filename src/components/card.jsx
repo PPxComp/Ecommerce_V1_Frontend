@@ -16,21 +16,25 @@ export default function CardComponent({
 }) {
   const [image, setImage] = useState("");
   useEffect(() => {
+    let isMounted = true;
+    setImage("");
+    if(isMounted){
     async function fetchData() {
       try {
         const result = await axios.get(
           `${process.env.REACT_APP_API_URL}/firebase/${_id}`
         );
+        console.log(typeof(result.data));
         if (result.data) {
           const storageRef = firebase.app().storage().ref();
           if (_id !== undefined) {
             const imageRef = storageRef.child(`img/${_id}`);
             imageRef.getDownloadURL().then(
               (avatarUrl) => {
-                setImage(avatarUrl);
+                if(isMounted)setImage(avatarUrl);
               },
               (error) => {
-                setImage("");
+                if(isMounted)setImage("");
               }
             );
           }
@@ -40,6 +44,7 @@ export default function CardComponent({
       }
     }
     fetchData();
+  }
   }, [_id]);
   return (
     <div>
