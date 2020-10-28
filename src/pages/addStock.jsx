@@ -4,7 +4,7 @@ import {
   TextField,
   Typography,
   Button,
-  NativeSelect,
+  NativeSelect
 } from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
 
@@ -20,7 +20,7 @@ export default function AddStock(props) {
     price: 0,
     count: 0,
     description: "",
-    catagory: [],
+    catagory: "",
   });
 
   const [image, setImage] = useState(null);
@@ -51,7 +51,7 @@ export default function AddStock(props) {
     }
   };
   const clear = () => {
-    setData({ name: "", price: 0, count: 0, description: "", catagory: "" });
+    setData({ name: "", price: 0, count: 0, description: "", catagory: [] });
     setImage(null);
   };
   return (
@@ -167,7 +167,10 @@ export default function AddStock(props) {
                     <NativeSelect
                       value={data.catagory}
                       onChange={(e) =>
-                        setData({ ...data, catagory: e.target.value.split(',') })
+                        setData({
+                          ...data,
+                          catagory: e.target.value.split(","),
+                        })
                       }
                       name="age"
                       fullWidth
@@ -194,11 +197,25 @@ export default function AddStock(props) {
                         </option>
                       </optgroup>
                     </NativeSelect>
+
+
+
+
+                    
+                    
                   </Box>
                 </Box>
                 <Box marginTop="2em">
                   <input type="file" name="myImage" onChange={handleImage} />
-                  {!image ? null:(<><img style={{width:"6em"}} src={image? URL.createObjectURL(image) : null} alt={image? image.name : null}/></>)}
+                  {!image ? null : (
+                    <>
+                      <img
+                        style={{ width: "6em" }}
+                        src={image ? URL.createObjectURL(image) : null}
+                        alt={image ? image.name : null}
+                      />
+                    </>
+                  )}
                 </Box>
               </Box>
             </Box>

@@ -24,7 +24,6 @@ export default function CardComponent({
         const result = await axios.get(
           `${process.env.REACT_APP_API_URL}/firebase/${_id}`
         );
-        console.log(typeof(result.data));
         if (result.data) {
           const storageRef = firebase.app().storage().ref();
           if (_id !== undefined) {
