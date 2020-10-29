@@ -11,6 +11,7 @@ export default function Stock(props) {
   const [defaultpage, setDefaultpage] = useState(1);
   const [orderBy, setOrderBy] = useState("");
   const [catagory, setCatagory] = useState([]);
+  const query = new URLSearchParams(props.location.search);
 
   const itemPerPage = 12;
   useEffect(() => {
@@ -112,7 +113,7 @@ export default function Stock(props) {
           justifyContent="center"
           marginTop="2em"
         >
-          <Paginations count={count} defaultpage={defaultpage}></Paginations>
+          <Paginations count={count} defaultpage={defaultpage} query={query}></Paginations>
         </Box>
       </Container>
     </div>
